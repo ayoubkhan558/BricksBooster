@@ -10,7 +10,7 @@ class BricksBooster_Templates {
      */
     public function __construct() {
         add_action('init', [$this, 'register_templates']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
+        // add_action('wp_enqueue_scripts', [$this, 'enqueue_assets']);
     }
 
     /**

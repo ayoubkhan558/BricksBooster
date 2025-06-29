@@ -1,5 +1,5 @@
 // Nestable Link Element
-export function initNestableLink() {
+function initNestableLink() {
     console.log('BricksBooster: Nestable Link element initialized');
     
     // Your element logic here

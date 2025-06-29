@@ -1,5 +1,5 @@
 // Reading Time Dynamic Tag
-export function initReadingTime() {
+function initReadingTime() {
     console.log('BricksBooster: Reading Time tag initialized');
     
     // Your dynamic tag logic here
