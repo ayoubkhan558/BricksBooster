@@ -6,26 +6,38 @@ class BricksBooster_Elements {
     }
 
     public function register_elements() {
-        // List of elements to register
-        $elements = [
-            'nestable_link' => [
-                'file'  => 'nestable-link.php',
-                'class' => 'BricksBooster_Elements_NestableLink',
-            ],
-            // Add more elements here as needed
-        ];
 
-        foreach ($elements as $key => $element) {
-            $file_path = BRICKSBOOSTER_DIR . 'includes/elements/' . $element['file'];
-            if (file_exists($file_path)) {
-                require_once $file_path;
-                $class_name = $element['class'];
-                if (class_exists($class_name)) {
-                    // Initialize the element
-                    new $class_name();
+
+
+        
+        /**
+         * Register custom elements
+         */
+        add_action( 'init', function() {
+            // List of elements to register
+            $elements = [
+                'simple_list' => [
+                    'file' => 'simple-list.php'
+                ],
+                'nestable_link' => [
+                    'file' => 'nestable-link.php'
+                ],
+                'nestable_list' => [
+                    'file' => 'nestable-list.php'
+                ],
+                // Add more elements here as needed
+            ];
+            // Register elements that are enabled in settings
+            foreach ($elements as $key => $element) {
+                if (get_option('bricksbooster_' . $key . '_enabled', 1)) {
+                    $file_path = BRICKSBOOSTER_DIR . 'includes/elements/' . $element['file'];
+                    if (file_exists($file_path)) {
+                        require_once $file_path;
+                        \Bricks\Elements::register_element($file_path);
+                    }
                 }
             }
-        }
+        }, 11 );
     }
 
     public function enqueue_assets() {

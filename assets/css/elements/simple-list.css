@@ -1,0 +1,17 @@
+/* Simple List Element Styles */
+.bb-simple-list {}
+
+.bb-simple-list ul,
+.bb-simple-list ol {}
+
+.bb-simple-list li {}
+
+.bb-simple-list a {}
+
+.bb-simple-list a:hover {}
+
+/* Nested list styling */
+.bb-simple-list ul ul,
+.bb-simple-list ol ol,
+.bb-simple-list ul ol,
+.bb-simple-list ol ul {}

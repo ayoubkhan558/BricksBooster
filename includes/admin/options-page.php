@@ -22,7 +22,9 @@ add_action('admin_init', function() {
     // Register DYNAMIC TAGS settings
     register_setting($option_group, 'bbooster_custom_tags_enabled');
     // Register ELEMENTS settings
-    register_setting($option_group, 'bricksbooster_custom_elements_enabled');
+    register_setting($option_group, 'bricksbooster_nestable_list_enabled');
+    register_setting($option_group, 'bricksbooster_nestable_link_enabled');
+    register_setting($option_group, 'bricksbooster_simple_list_enabled'); 
     
     // Register BUILDER TWEAKS settings from features array
     $features = [
@@ -217,24 +219,44 @@ class BricksBooster_Options_Page {
     }
 
     private function render_elements_tab() {
-        $custom_elements_enabled = get_option('bricksbooster_custom_elements_enabled', 1);
         ?>
         <div class="bb-admin-settings-section">
             <h3>Custom Elements Settings</h3>
             <p>Enable/Disable custom elements functionality.</p>
-            
             <div class="bb-admin-toggles-grid">
-                <div class="bb-admin-toggle">
-                    <label>
-                        <input type="checkbox" name="bricksbooster_custom_elements_enabled" value="1" <?php checked($custom_elements_enabled, 1); ?>>
-                        <span class="toggle-switch"></span>
-                        <span class="toggle-label">Custom Elements</span>
-                        <span class="tooltip">
-                            <span class="tooltip-icon">?</span>
-                            <span class="tooltip-text">Enable additional elements in the Bricks builder</span>
-                        </span>
-                    </label>
-                </div>
+                <?php
+                $elements = [
+                    'nestable_list' => [
+                        'label' => 'Nestable List',
+                        'tooltip' => 'Enable nestable list element'
+                    ],
+                    'nestable_link' => [
+                        'label' => 'Nestable Link',
+                        'tooltip' => 'Enable nestable link element'
+                    ],
+                    'simple_list' => [
+                        'label' => 'Simple List',
+                        'tooltip' => 'Enable simple list element'
+                    ],
+                ];
+
+                foreach ($elements as $key => $element) {
+                    $enabled = get_option('bricksbooster_' . $key . '_enabled', 1);
+                    ?>
+                    <div class="bb-admin-toggle">
+                        <label>
+                            <input type="checkbox" name="bricksbooster_<?php echo esc_attr($key); ?>_enabled" value="1" <?php checked($enabled, 1); ?>>
+                            <span class="toggle-switch"></span>
+                            <span class="toggle-label"><?php echo esc_html($element['label']); ?></span>
+                            <span class="tooltip">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text"><?php echo esc_html($element['tooltip']); ?></span>
+                            </span>
+                        </label>
+                    </div>
+                    <?php
+                }
+                ?>
             </div>
         </div>
         <?php
