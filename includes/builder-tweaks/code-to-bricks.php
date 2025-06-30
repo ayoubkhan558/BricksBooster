@@ -37,7 +37,5 @@ class BricksBooster_Builder_Tweaks_CodeToBricks {
                 'nonce' => wp_create_nonce('bricksbooster-code-to-bricks-nonce')
             ]
         );
-        // Debugging: log to PHP error log to confirm this runs
-        error_log('BricksBooster: enqueueing code-to-bricks assets');
     }
 }

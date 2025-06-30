@@ -18,6 +18,10 @@ class BricksBooster_Builder_Tweaks {
                 'file'  => 'link-indicator.php',
                 'class' => 'BricksBooster_Builder_Tweaks_LinkIndicator',
             ],
+            'html_validator' => [
+                'file'  => 'html-validator.php',
+                'class' => 'BricksBooster_Builder_Tweaks_HtmlValidator',
+            ],
         ];
 
         foreach ($features as $key => $feature) {
