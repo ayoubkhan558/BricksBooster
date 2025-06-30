@@ -106,10 +106,10 @@ class BricksBooster_Options_Page {
                     </div>
                     
                     <nav class="bb-admin-nav-tab-wrapper">
-                        <button type="button" data-tab="templates" class="bb-admin-nav-tab bb-admin-nav-tab-active">Templates</button>
+                        <button type="button" data-tab="builder-tweaks" class="bb-admin-nav-tab bb-admin-nav-tab-active">Builder Tweaks</button>
                         <button type="button" data-tab="tags" class="bb-admin-nav-tab">Tags</button>
                         <button type="button" data-tab="elements" class="bb-admin-nav-tab">Elements</button>
-                        <button type="button" data-tab="builder-tweaks" class="bb-admin-nav-tab">Builder Tweaks</button>
+                        <button type="button" data-tab="templates" class="bb-admin-nav-tab">Templates</button>
                     </nav>
                     
                     <div class="bb-admin-tab-content">
@@ -121,18 +121,18 @@ class BricksBooster_Options_Page {
                             ?>
                             <?php wp_nonce_field('ajax_file_nonce', 'security'); ?>
                             
-                                <div id="templates" class="bb-admin-tab-pane active">
-                                    <?php $this->render_templates_tab(); ?>
-                                </div>
-                                <div id="tags" class="bb-admin-tab-pane">
-                                    <?php $this->render_tags_tab(); ?>
-                                </div>
-                                <div id="elements" class="bb-admin-tab-pane">
-                                    <?php $this->render_elements_tab(); ?>
-                                </div>
-                                <div id="builder-tweaks" class="bb-admin-tab-pane">
-                                    <?php $this->render_builder_tweaks_tab(); ?>
-                                </div>
+                            <div id="builder-tweaks" class="bb-admin-tab-pane active">
+                                <?php $this->render_builder_tweaks_tab(); ?>
+                            </div>
+                            <div id="templates" class="bb-admin-tab-pane">
+                                <?php $this->render_templates_tab(); ?>
+                            </div>
+                            <div id="tags" class="bb-admin-tab-pane">
+                                <?php $this->render_tags_tab(); ?>
+                            </div>
+                            <div id="elements" class="bb-admin-tab-pane">
+                                <?php $this->render_elements_tab(); ?>
+                            </div>
                             
                             <?php submit_button('Save All Settings'); ?>
                         </form>
@@ -146,8 +146,8 @@ class BricksBooster_Options_Page {
                         </div>
                         <div class="bb-admin-sidebar-content">
                             <p><strong>Version:</strong> <?php echo esc_html($plugin_data['Version']); ?></p>
-                            <p><strong>Author:</strong> <?php echo esc_html($plugin_data['Author']); ?></p>
-                            <p><?php echo esc_html($plugin_data['Description']); ?></p>
+                            <p><strong>Author:</strong> <a href="https://www.linkedin.com/in/ayoubkhan558" target="_blank" rel="noopener noreferrer"><?php echo esc_html($plugin_data['Author']); ?></a></p>
+                            <div><?php echo wp_kses_post($plugin_data['Description']); ?></div>
                             <p><a href="#" target="_blank"><?php _e('View Documentation', 'bricksbooster'); ?></a></p>
                         </div>
                     </div>
@@ -158,6 +158,7 @@ class BricksBooster_Options_Page {
                         </div>
                         <div class="bb-admin-sidebar-content">
                             <p><?php _e('If you need help with BricksBooster, please check our documentation or contact support.', 'bricksbooster'); ?></p>
+                            <br/>
                             <p><a href="#" class="bb-admin-button-primary" target="_blank"><?php _e('Get Support', 'bricksbooster'); ?></a></p>
                         </div>
                     </div>

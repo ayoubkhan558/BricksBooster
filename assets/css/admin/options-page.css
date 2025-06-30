@@ -15,6 +15,7 @@
 
 .bb-admin-main {
     flex: 1;
+    overflow: hidden;
     background: var(--bb-admin-bg-color);
     border: var(--bb-admin-border);
     box-shadow: var(--bb-admin-box-shadow);
@@ -52,6 +53,7 @@
 
 .bb-admin-sidebar-content p {
     margin-top: 0;
+    margin-bottom: 5px;
 }
 
 .bb-admin-sidebar-content p:last-child {
@@ -63,6 +65,8 @@
     border-bottom: 1px solid #dcdcde;
     display: flex;
     justify-content: space-between;
+    background: #f6f7f7;
+    /* overflow: hidden; */
     align-items: center;
 }
 
@@ -132,6 +136,7 @@
 }
 
 .bb-admin-button-primary {
+    padding: 5px 10px;
     background: #2271b1;
     border-color: #2271b1;
     color: #fff;
@@ -139,7 +144,9 @@
     text-shadow: none;
 }
 
-.bb-admin-button-primary:hover {
+.bb-admin-button-primary:hover,
+.bb-admin-button-primary:focus,
+.bb-admin-button-primary:active {
     background: #135e96;
     border-color: #135e96;
     color: #fff;
@@ -197,7 +204,7 @@
     padding: 15px;
     background: #fff;
     border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .bb-admin-toggle label {
@@ -234,11 +241,11 @@
     transition: transform 0.3s;
 }
 
-.bb-admin-toggle input[type="checkbox"]:checked + .toggle-switch {
+.bb-admin-toggle input[type="checkbox"]:checked+.toggle-switch {
     background: #2271b1;
 }
 
-.bb-admin-toggle input[type="checkbox"]:checked + .toggle-switch:after {
+.bb-admin-toggle input[type="checkbox"]:checked+.toggle-switch:after {
     transform: translateX(20px);
 }
 
