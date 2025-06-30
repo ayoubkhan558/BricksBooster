@@ -12,52 +12,28 @@ if (!defined('BRICKSBOOSTER_URL')) {
     define('BRICKSBOOSTER_URL', plugin_dir_url(__FILE__) . '../../');
 }
 
-// Register settings
-add_action('admin_init', function() {
-    // Template settings
-    register_setting('bricksbooster_templates', 'bricksbooster_template_library_enabled');
-    
-    // Tag settings
-    register_setting('bricksbooster_tags', 'bricksbooster_custom_tags_enabled');
-    
-    // Element settings
-    register_setting('bricksbooster_elements', 'bricksbooster_custom_elements_enabled');
-    
-    // Builder tweaks settings
-    register_setting('bricksbooster_builder_tweaks', 'bricksbooster_html_validator_enabled');
-    register_setting('bricksbooster_builder_tweaks', 'bricksbooster_code_to_bricks_enabled');
-});
+$section_id = 'bricksbooster_settings_group';
 
-// AJAX handler for saving options
-add_action('wp_ajax_bricksbooster_save_options', function() {
-    // Verify nonce for security
-    if (!isset($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'], 'bricksbooster_options_nonce')) {
-        wp_send_json_error('Security check failed');
-    }
+// Register settings - Use WordPress Settings API properly
+add_action('admin_init', function() {
+    $option_group = 'bricksbooster_settings_group';
+    // Register TEMPLATES settings
+    register_setting($option_group, 'bbooster_template_library_enabled');
+    // Register DYNAMIC TAGS settings
+    register_setting($option_group, 'bbooster_custom_tags_enabled');
+    // Register ELEMENTS settings
+    register_setting($option_group, 'bricksbooster_custom_elements_enabled');
     
-    // Check user capabilities
-    if (!current_user_can('manage_options')) {
-        wp_send_json_error('Unauthorized');
-    }
-    
-    // Process and save each setting
-    $settings = [
-        'bricksbooster_template_library_enabled',
-        'bricksbooster_custom_tags_enabled',
-        'bricksbooster_custom_elements_enabled',
-        'bricksbooster_html_validator_enabled',
-        'bricksbooster_code_to_bricks_enabled'
+    // Register BUILDER TWEAKS settings from features array
+    $features = [
+        'code_to_bricks' => 'Code to Bricks Converter',
+        'html_validator' => 'HTML Visual Validator',
+        'link_indicator' => 'Link Indicator'
     ];
     
-    foreach ($settings as $setting) {
-        if (isset($_REQUEST[$setting])) {
-            update_option($setting, (bool)$_REQUEST[$setting]);
-        } else {
-            update_option($setting, false);
-        }
+    foreach ($features as $feature_key => $feature_name) {
+        register_setting($option_group, 'bbooster_' . $feature_key . '_enabled');
     }
-    
-    wp_send_json_success('Settings saved successfully');
 });
 
 class BricksBooster_Options_Page {
@@ -102,6 +78,24 @@ class BricksBooster_Options_Page {
     }
 
     public function render_page() {
+        // Check user capabilities
+        if (!current_user_can('manage_options')) {
+            return;
+        }
+
+        // Check if settings were updated
+        if (isset($_GET['settings-updated'])) {
+            add_settings_error(
+                'bricksbooster_messages',
+                'bricksbooster_message',
+                __('BricksBooster settings saved', 'bricksbooster'),
+                'updated'
+            );
+        }
+
+        // Show error/update messages
+        settings_errors('bricksbooster_messages');
+
         $plugin_data = get_plugin_data(BRICKSBOOSTER_PATH . 'bricks-booster.php');
         ?>
         <div class="wrap">
@@ -119,18 +113,29 @@ class BricksBooster_Options_Page {
                     </nav>
                     
                     <div class="bb-admin-tab-content">
-                        <div id="templates" class="bb-admin-tab-pane active">
-                            <?php $this->render_templates_tab(); ?>
-                        </div>
-                        <div id="tags" class="bb-admin-tab-pane">
-                            <?php $this->render_tags_tab(); ?>
-                        </div>
-                        <div id="elements" class="bb-admin-tab-pane">
-                            <?php $this->render_elements_tab(); ?>
-                        </div>
-                        <div id="builder-tweaks" class="bb-admin-tab-pane">
-                            <?php $this->render_builder_tweaks_tab(); ?>
-                        </div>
+                        <!-- Form using WordPress Settings API -->
+                        <form action="options.php" method="post" id="bricksbooster-settings-form">
+                            <?php
+                            settings_fields('bricksbooster_settings_group');
+                            do_settings_sections('bricksbooster-options');
+                            ?>
+                            <?php wp_nonce_field('ajax_file_nonce', 'security'); ?>
+                            
+                                <div id="templates" class="bb-admin-tab-pane active">
+                                    <?php $this->render_templates_tab(); ?>
+                                </div>
+                                <div id="tags" class="bb-admin-tab-pane">
+                                    <?php $this->render_tags_tab(); ?>
+                                </div>
+                                <div id="elements" class="bb-admin-tab-pane">
+                                    <?php $this->render_elements_tab(); ?>
+                                </div>
+                                <div id="builder-tweaks" class="bb-admin-tab-pane">
+                                    <?php $this->render_builder_tweaks_tab(); ?>
+                                </div>
+                            
+                            <?php submit_button('Save All Settings'); ?>
+                        </form>
                     </div>
                 </div>
                 
@@ -163,95 +168,107 @@ class BricksBooster_Options_Page {
     }
 
     private function render_templates_tab() {
-        echo '<div class="bb-admin-settings-section">';
-        echo '<h3>Customize the functions included in BricksBooster</h3>';
-        echo '<p>Enable/Disable any of the following settings. Once disabled, the corresponding function will be completely disabled on both the backend and the frontend.</p>';
-        
-        echo '<form method="post" action="options.php">';
-        wp_nonce_field('bricksbooster_options_nonce');
-        settings_fields('bricksbooster_templates');
-        do_settings_sections('bricksbooster_templates');
-        
-        $template_library_enabled = get_option('bricksbooster_template_library_enabled', true);
-        echo '<div class="bb-admin-toggle">';
-        echo '<label><input type="checkbox" name="bricksbooster_template_library_enabled" value="1" ' . checked($template_library_enabled, true, false) . '> Template Library</label>';
-        echo '<p class="description">Enable the BricksBooster template library with pre-designed templates</p>';
-        echo '</div>';
-        
-        submit_button();
-        echo '</form>';
-        echo '</div>';
+        $template_library_enabled = get_option('bbooster_template_library_enabled', 1);
+        ?>
+        <div class="bb-admin-settings-section">
+            <h3>Template Library Settings</h3>
+            <p>Enable/Disable the template library functionality.</p>
+
+            <div class="bb-admin-toggles-grid">
+                <div class="bb-admin-toggle">
+                    <label>
+                        <input type="checkbox" name="bbooster_template_library_enabled" value="1" <?php checked($template_library_enabled, 1); ?>>
+                        <span class="toggle-switch"></span>
+                        <span class="toggle-label">Template Library</span>
+                        <span class="tooltip">
+                            <span class="tooltip-icon">?</span>
+                            <span class="tooltip-text">Enable the BricksBooster template library with pre-designed templates</span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <?php
     }
 
     private function render_tags_tab() {
-        echo '<div class="bb-admin-settings-section">';
-        echo '<h3>Customize the functions included in BricksBooster</h3>';
-        echo '<p>Enable/Disable any of the following settings. Once disabled, the corresponding function will be completely disabled on both the backend and the frontend.</p>';
-        
-        echo '<form method="post" action="options.php">';
-        wp_nonce_field('bricksbooster_options_nonce');
-        settings_fields('bricksbooster_tags');
-        do_settings_sections('bricksbooster_tags');
-        
-        $custom_tags_enabled = get_option('bricksbooster_custom_tags_enabled', true);
-        echo '<div class="bb-admin-toggle">';
-        echo '<label><input type="checkbox" name="bricksbooster_custom_tags_enabled" value="1" ' . checked($custom_tags_enabled, true, false) . '> Custom Tags</label>';
-        echo '<p class="description">Enable additional HTML/CSS tags in the Bricks builder</p>';
-        echo '</div>';
-        
-        submit_button();
-        echo '</form>';
-        echo '</div>';
+        $custom_tags_enabled = get_option('bbooster_custom_tags_enabled', 1);
+        ?>
+        <div class="bb-admin-settings-section">
+            <h3>Custom Tags Settings</h3>
+            <p>Enable/Disable custom HTML/CSS tags functionality.</p>
+
+            <div class="bb-admin-toggles-grid">
+                <div class="bb-admin-toggle">
+                    <label>
+                        <input type="checkbox" name="bbooster_custom_tags_enabled" value="1" <?php checked($custom_tags_enabled, 1); ?>>
+                        <span class="toggle-switch"></span>
+                        <span class="toggle-label">Custom Tags</span>
+                        <span class="tooltip">
+                            <span class="tooltip-icon">?</span>
+                            <span class="tooltip-text">Enable additional HTML/CSS tags in the Bricks builder</span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <?php
     }
 
     private function render_elements_tab() {
-        echo '<div class="bb-admin-settings-section">';
-        echo '<h3>Customize the functions included in BricksBooster</h3>';
-        echo '<p>Enable/Disable any of the following settings. Once disabled, the corresponding function will be completely disabled on both the backend and the frontend.</p>';
-        
-        echo '<form method="post" action="options.php">';
-        wp_nonce_field('bricksbooster_options_nonce');
-        settings_fields('bricksbooster_elements');
-        do_settings_sections('bricksbooster_elements');
-        
-        $custom_elements_enabled = get_option('bricksbooster_custom_elements_enabled', true);
-        echo '<div class="bb-admin-toggle">';
-        echo '<label><input type="checkbox" name="bricksbooster_custom_elements_enabled" value="1" ' . checked($custom_elements_enabled, true, false) . '> Custom Elements</label>';
-        echo '<p class="description">Enable additional elements in the Bricks builder</p>';
-        echo '</div>';
-        
-        submit_button();
-        echo '</form>';
-        echo '</div>';
+        $custom_elements_enabled = get_option('bricksbooster_custom_elements_enabled', 1);
+        ?>
+        <div class="bb-admin-settings-section">
+            <h3>Custom Elements Settings</h3>
+            <p>Enable/Disable custom elements functionality.</p>
+            
+            <div class="bb-admin-toggles-grid">
+                <div class="bb-admin-toggle">
+                    <label>
+                        <input type="checkbox" name="bricksbooster_custom_elements_enabled" value="1" <?php checked($custom_elements_enabled, 1); ?>>
+                        <span class="toggle-switch"></span>
+                        <span class="toggle-label">Custom Elements</span>
+                        <span class="tooltip">
+                            <span class="tooltip-icon">?</span>
+                            <span class="tooltip-text">Enable additional elements in the Bricks builder</span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <?php
     }
 
     private function render_builder_tweaks_tab() {
-        echo '<div class="bb-admin-settings-section">';
-        echo '<h3>Customize the functions included in BricksBooster</h3>';
-        echo '<p>Enable/Disable any of the following settings. Once disabled, the corresponding function will be completely disabled on both the backend and the frontend.</p>';
+        $features = [
+            'code_to_bricks' => 'Code to Bricks Converter',
+            'html_validator' => 'HTML Visual Validator',
+            'link_indicator' => 'Link Indicator'
+        ];
         
-        echo '<form method="post" action="options.php">';
-        wp_nonce_field('bricksbooster_options_nonce');
-        settings_fields('bricksbooster_builder_tweaks');
-        do_settings_sections('bricksbooster_builder_tweaks');
-        
-        // Builder tweaks options
-        $html_validator_enabled = get_option('bricksbooster_html_validator_enabled', true);
-        $code_to_bricks_enabled = get_option('bricksbooster_code_to_bricks_enabled', true);
-        
-        echo '<div class="bb-admin-toggle">';
-        echo '<label><input type="checkbox" name="bricksbooster_html_validator_enabled" value="1" ' . checked($html_validator_enabled, true, false) . '> HTML Visual Validator</label>';
-        echo '<p class="description">Enable the HTML validator that checks your structure in the builder</p>';
-        echo '</div>';
-        
-        echo '<div class="bb-admin-toggle">';
-        echo '<label><input type="checkbox" name="bricksbooster_code_to_bricks_enabled" value="1" ' . checked($code_to_bricks_enabled, true, false) . '> Code to Bricks Converter</label>';
-        echo '<p class="description">Enable the tool that converts HTML/CSS code to Bricks elements</p>';
-        echo '</div>';
-        
-        submit_button();
-        echo '</form>';
-        echo '</div>';
+        ?>
+        <div class="bb-admin-settings-section">
+            <h3>Builder Tweaks Settings</h3>
+            <p>Enable/Disable builder enhancement tools.</p>
+            
+            <div class="bb-admin-toggles-grid">
+                <?php foreach ($features as $feature_key => $feature_name) : ?>
+                    <?php $feature_enabled = get_option('bbooster_' . $feature_key . '_enabled', 1); ?>
+                    <div class="bb-admin-toggle">
+                        <label>
+                            <input type="checkbox" name="bbooster_<?php echo $feature_key; ?>_enabled" value="1" <?php checked($feature_enabled, 1); ?>>
+                            <span class="toggle-switch"></span>
+                            <span class="toggle-label"><?php echo $feature_name; ?></span>
+                            <span class="tooltip">
+                                <span class="tooltip-icon">?</span>
+                                <span class="tooltip-text"><?php echo $feature_name; ?></span>
+                            </span>
+                        </label>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <?php
     }
 }
 

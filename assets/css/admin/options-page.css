@@ -106,9 +106,12 @@
     border-bottom-color: #9e9e9e;
 }
 
+.bb-admin-tab-content {
+    padding: 20px;
+}
+
 .bb-admin-tab-pane {
     display: none;
-    padding: 20px;
 }
 
 .bb-admin-tab-pane.active {
@@ -183,31 +186,106 @@
     font-size: 14px;
 }
 
+.bb-admin-toggles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
 .bb-admin-toggle {
     margin-bottom: 20px;
     padding: 15px;
-    background: #f6f7f7;
-    border-radius: 8px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .bb-admin-toggle label {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-weight: 500;
     cursor: pointer;
+    position: relative;
 }
 
 .bb-admin-toggle input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
+    opacity: 0;
+    position: absolute;
 }
 
-.bb-admin-toggle .description {
-    margin: 5px 0 0 28px;
-    font-size: 13px;
-    color: #646970;
-    font-weight: normal;
+.bb-admin-toggle .toggle-switch {
+    width: 40px;
+    height: 20px;
+    background: #ddd;
+    border-radius: 12px;
+    position: relative;
+    margin-right: 10px;
+    transition: background 0.3s;
+}
+
+.bb-admin-toggle .toggle-switch:after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+}
+
+.bb-admin-toggle input[type="checkbox"]:checked + .toggle-switch {
+    background: #2271b1;
+}
+
+.bb-admin-toggle input[type="checkbox"]:checked + .toggle-switch:after {
+    transform: translateX(20px);
+}
+
+.bb-admin-toggle .toggle-label {
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.bb-admin-toggle .tooltip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.bb-admin-toggle .tooltip .tooltip-icon {
+    width: 16px;
+    height: 16px;
+    background: #ccc;
+    color: #fff;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: help;
+}
+
+.bb-admin-toggle .tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.bb-admin-toggle .tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
 }
 
 .bb-admin-toggle:hover {

@@ -25,13 +25,16 @@ class BricksBooster_Builder_Tweaks {
         ];
 
         foreach ($features as $key => $feature) {
-            $file_path = BRICKSBOOSTER_DIR . 'includes/builder-tweaks/' . $feature['file'];
-            if (file_exists($file_path)) {
-                require_once $file_path;
-                $class_name = $feature['class'];
-                if (class_exists($class_name)) {
-                    // Store instance for potential later use
-                    $this->features[$key] = new $class_name();
+            // Only load if feature is enabled in settings (default to enabled)
+            if (get_option('bbooster_' . $key . '_enabled', 1)) {
+                $file_path = BRICKSBOOSTER_DIR . 'includes/builder-tweaks/' . $feature['file'];
+                if (file_exists($file_path)) {
+                    require_once $file_path;
+                    $class_name = $feature['class'];
+                    if (class_exists($class_name)) {
+                        // Store instance for potential later use
+                        $this->features[$key] = new $class_name();
+                    }
                 }
             }
         }
