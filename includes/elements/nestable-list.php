@@ -175,6 +175,22 @@ class BricksBooster_Elements_NestableList extends \Bricks\Element {
     public function get_nestable_allowed_elements() {
         return ['text-basic'];
     }
+    
+    // Add validation to filter out non-text-basic elements
+    public function validate_children($children) {
+        if (!is_array($children)) {
+            return $children;
+        }
+
+        $filtered_children = [];
+        foreach ($children as $child) {
+            if (isset($child['name']) && $child['name'] === 'text-basic') {
+                $filtered_children[] = $child;
+            }
+        }
+
+        return $filtered_children;
+    }
 
     public function get_nestable_item() {
         return [
@@ -207,17 +223,36 @@ class BricksBooster_Elements_NestableList extends \Bricks\Element {
     public function render() {
         $settings = $this->settings;
         $list_tag = isset($settings['listTag']) ? $settings['listTag'] : 'ul';
-
+    
         $this->set_attribute('_root', 'class', 'bb-nestable-list');
-
+    
         $output = "<{$list_tag} {$this->render_attributes('_root')}>";
-
-        // Render children elements using Frontend::render_children with 'li' wrapper
-        $list_content = \Bricks\Frontend::render_children($this, 'li');
-        $output .= $list_content;
-
+    
+        // Check if we have children and they are valid
+        if (!empty($this->children) && is_array($this->children)) {
+            // Validate and filter children to only include text-basic elements
+            $validated_children = $this->validate_children($this->children);
+            
+            // Temporarily store original children
+            $original_children = $this->children;
+            
+            // Set validated children for rendering
+            $this->children = $validated_children;
+            
+            // Render children elements using Frontend::render_children with 'li' wrapper
+            $list_content = \Bricks\Frontend::render_children($this, 'li');
+            $output .= $list_content;
+            
+            // Restore original children (optional, but good practice)
+            $this->children = $original_children;
+        } else {
+            // No children to render
+            $list_content = \Bricks\Frontend::render_children($this, 'li');
+            $output .= $list_content;
+        }
+    
         $output .= "</{$list_tag}>";
-
+    
         echo $output;
     }
 }
