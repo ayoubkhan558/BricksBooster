@@ -197,7 +197,7 @@
 }
 
 .bbhv-heading-border::after {
-    content: "H";
+    content: "Heading";
     background-color: var(--bbhv-category-heading-color) !important;
 }
 
@@ -206,7 +206,7 @@
 }
 
 .bbhv-text-border::after {
-    content: "T";
+    content: "Text";
     background-color: var(--bbhv-category-text-color) !important;
 }
 
@@ -224,7 +224,7 @@
 }
 
 .bbhv-link-border::after {
-    content: "L";
+    content: "Link";
     background-color: var(--bbhv-category-link-color) !important;
 }
 
@@ -233,7 +233,7 @@
 }
 
 .bbhv-media-border::after {
-    content: "M";
+    content: "Media";
     background-color: var(--bbhv-category-media-color) !important;
 }
 
