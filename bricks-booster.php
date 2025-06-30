@@ -14,6 +14,9 @@ define('BRICKSBOOSTER_URL', plugin_dir_url(__FILE__));
 // Prevent direct access
 if (!defined('ABSPATH')) exit;
 
+// Initialize plugin components
+require_once BRICKSBOOSTER_DIR . 'includes/admin/options-page.php';
+
 class BricksBooster {
     private static $instance = null;
     private $modules = [];

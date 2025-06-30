@@ -1,0 +1,216 @@
+:root {
+    --bb-admin-bg-color: #fff;
+    --bb-admin-text-color: #333;
+    --bb-admin-border: 1px solid #ccd0d4;
+    --bb-admin-primary-color: #2271b1;
+    --bb-admin-box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+    --bb-admin-border-radius: 12px;
+}
+
+.bb-admin-options {
+    margin: 20px 0 0 0;
+    display: flex;
+    gap: 20px;
+    max-width: 1200px;
+}
+
+.bb-admin-main {
+    flex: 1;
+    background: var(--bb-admin-bg-color);
+    border: var(--bb-admin-border);
+    box-shadow: var(--bb-admin-box-shadow);
+    border-radius: var(--bb-admin-border-radius);
+}
+
+.bb-admin-sidebar {
+    width: 300px;
+}
+
+.bb-admin-sidebar-box {
+    overflow: hidden;
+    background: var(--bb-admin-bg-color);
+    border: var(--bb-admin-border);
+    box-shadow: var(--bb-admin-box-shadow);
+    border-radius: var(--bb-admin-border-radius);
+    margin-bottom: 20px;
+}
+
+.bb-admin-sidebar-header {
+    border-bottom: 1px solid #dcdcde;
+    padding: 12px 15px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    background: #f6f7f7;
+}
+
+.bb-admin-sidebar-content {
+    padding: 15px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.bb-admin-sidebar-content p {
+    margin-top: 0;
+}
+
+.bb-admin-sidebar-content p:last-child {
+    margin-bottom: 0;
+}
+
+.bb-admin-header {
+    padding: 10px 20px;
+    border-bottom: 1px solid #dcdcde;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bb-admin-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.bb-admin-nav-tab-wrapper {
+    margin: 0;
+    border-bottom: 1px solid #dcdcde;
+    padding: 0 15px;
+}
+
+.bb-admin-nav-tab {
+    padding: 15px 20px;
+    margin: 0;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    text-decoration: none;
+    color: #646970;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.7;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.bb-admin-nav-tab-active {
+    background: transparent;
+    border-bottom: 3px solid #2271b1;
+    color: #1d2327;
+}
+
+.bb-admin-nav-tab:hover {
+    color: #1d2327;
+    border-bottom-color: #9e9e9e;
+}
+
+.bb-admin-tab-pane {
+    display: none;
+    padding: 20px;
+}
+
+.bb-admin-tab-pane.active {
+    display: block;
+}
+
+.bb-admin-form-table {
+    margin-top: 0;
+}
+
+.bb-admin-form-table th {
+    width: 300px;
+    padding: 20px 10px 20px 0;
+}
+
+.bb-admin-form-table td {
+    padding: 15px 10px;
+}
+
+.bb-admin-button-primary {
+    background: #2271b1;
+    border-color: #2271b1;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: none;
+}
+
+.bb-admin-button-primary:hover {
+    background: #135e96;
+    border-color: #135e96;
+    color: #fff;
+}
+
+/* Responsive */
+@media screen and (max-width: 1024px) {
+    .bb-admin-options {
+        flex-direction: column;
+    }
+
+    .bb-admin-sidebar {
+        width: 100%;
+    }
+}
+
+.bb-admin-form-table th {
+    width: 250px;
+}
+
+.bb-admin-tag-count {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 6px;
+    background: #2271b1;
+    color: white;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.bb-admin-settings-section {
+    margin-bottom: 30px;
+}
+
+.bb-admin-settings-section h3 {
+    margin: 0 0 15px 0;
+    font-size: 18px;
+    color: var(--bb-admin-text-color);
+}
+
+.bb-admin-settings-section p {
+    margin: 0 0 20px 0;
+    color: #646970;
+    font-size: 14px;
+}
+
+.bb-admin-toggle {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f6f7f7;
+    border-radius: 8px;
+}
+
+.bb-admin-toggle label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.bb-admin-toggle input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+.bb-admin-toggle .description {
+    margin: 5px 0 0 28px;
+    font-size: 13px;
+    color: #646970;
+    font-weight: normal;
+}
+
+.bb-admin-toggle:hover {
+    background: #f0f0f1;
+}
