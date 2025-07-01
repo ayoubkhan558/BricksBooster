@@ -6,6 +6,11 @@ class BricksBooster_Dynamic_Tags {
     }
 
     public function register_dynamic_tags() {
+        // Only proceed if Bricks Dynamic Data base class is available
+        if ( ! class_exists( '\\Bricks\\Integrations\\Dynamic_Data\\Tag_Base' ) ) {
+            return;
+        }
+
         // List of dynamic tags to register
         $tags = [
             'reading_time' => [
@@ -15,14 +20,14 @@ class BricksBooster_Dynamic_Tags {
             // Add more dynamic tags here as needed
         ];
 
-        foreach ($tags as $key => $tag) {
-            $file_path = BRICKSBOOSTER_DIR . 'includes/dynamic-tags/' . $tag['file'];
-            if (file_exists($file_path)) {
+        foreach ( $tags as $tag ) {
+            $file_path = BRICKSBOOSTER_PATH . 'includes/dynamic-tags/' . $tag['file'];
+            if ( file_exists( $file_path ) ) {
                 require_once $file_path;
-                $class_name = $tag['class'];
-                if (class_exists($class_name)) {
+
+                if ( class_exists( $tag['class'] ) ) {
                     // Initialize the dynamic tag
-                    new $class_name();
+                    new $tag['class']();
                 }
             }
         }
