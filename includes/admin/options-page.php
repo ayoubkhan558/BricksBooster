@@ -12,8 +12,6 @@ if (!defined('BRICKSBOOSTER_URL')) {
     define('BRICKSBOOSTER_URL', plugin_dir_url(__FILE__) . '../../');
 }
 
-$section_id = 'bricksbooster_settings_group';
-
 // Register settings - Use WordPress Settings API properly
 add_action('admin_init', function() {
     $option_group = 'bricksbooster_settings_group';
@@ -44,9 +42,26 @@ add_action('admin_init', function() {
     }
 });
 
+// Include tab classes
+require_once BRICKSBOOSTER_PATH . 'includes/admin/tabs/templates.php';
+require_once BRICKSBOOSTER_PATH . 'includes/admin/tabs/tags.php';
+require_once BRICKSBOOSTER_PATH . 'includes/admin/tabs/elements.php';
+require_once BRICKSBOOSTER_PATH . 'includes/admin/tabs/builder-tweaks.php';
+require_once BRICKSBOOSTER_PATH . 'includes/admin/tabs/query-loops.php';
+
 class BricksBooster_Options_Page {
+    private $tabs = [];
 
     public function __construct() {
+        // Initialize tab classes
+        $this->tabs = [
+            'templates' => new BricksBooster_Templates_Tab(),
+            'tags' => new BricksBooster_Tags_Tab(),
+            'elements' => new BricksBooster_Elements_Tab(),
+            'builder-tweaks' => new BricksBooster_Builder_Tweaks_Tab(),
+            'query-loops' => new BricksBooster_Query_Loops_Tab()
+        ];
+
         // Use priority 99 to ensure this appears last
         add_action('admin_menu', [$this, 'add_options_page'], 99);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_assets']);
@@ -114,11 +129,11 @@ class BricksBooster_Options_Page {
                     </div>
                     
                     <nav class="bb-admin-nav-tab-wrapper">
-                        <button type="button" data-tab="builder-tweaks" class="bb-admin-nav-tab bb-admin-nav-tab-active">Builder Tweaks</button>
-                        <button type="button" data-tab="tags" class="bb-admin-nav-tab">Tags</button>
-                        <button type="button" data-tab="elements" class="bb-admin-nav-tab">Elements</button>
-                        <button type="button" data-tab="templates" class="bb-admin-nav-tab">Templates</button>
-                        <button type="button" data-tab="query-loops" class="bb-admin-nav-tab">Query Loops</button>
+                        <?php foreach ($this->tabs as $tab_id => $tab) : ?>
+                            <button type="button" data-tab="<?php echo esc_attr($tab_id); ?>" class="bb-admin-nav-tab <?php echo $tab_id === 'builder-tweaks' ? 'bb-admin-nav-tab-active' : ''; ?>">
+                                <?php echo ucwords(str_replace('-', ' ', $tab_id)); ?>
+                            </button>
+                        <?php endforeach; ?>
                     </nav>
                     
                     <div class="bb-admin-tab-content">
@@ -130,21 +145,11 @@ class BricksBooster_Options_Page {
                             ?>
                             <?php wp_nonce_field('ajax_file_nonce', 'security'); ?>
                             
-                            <div id="builder-tweaks" class="bb-admin-tab-pane active">
-                                <?php $this->render_builder_tweaks_tab(); ?>
-                            </div>
-                            <div id="templates" class="bb-admin-tab-pane">
-                                <?php $this->render_templates_tab(); ?>
-                            </div>
-                            <div id="tags" class="bb-admin-tab-pane">
-                                <?php $this->render_tags_tab(); ?>
-                            </div>
-                            <div id="elements" class="bb-admin-tab-pane">
-                                <?php $this->render_elements_tab(); ?>
-                            </div>
-                            <div id="query-loops" class="bb-admin-tab-pane">
-                                <?php $this->render_query_loops_tab(); ?>
-                            </div>
+                            <?php foreach ($this->tabs as $tab_id => $tab) : ?>
+                                <div id="<?php echo esc_attr($tab_id); ?>" class="bb-admin-tab-pane <?php echo $tab_id === 'builder-tweaks' ? 'active' : ''; ?>">
+                                    <?php $tab->render(); ?>
+                                </div>
+                            <?php endforeach; ?>
                             
                             <?php submit_button('Save All Settings'); ?>
                         </form>
@@ -174,214 +179,6 @@ class BricksBooster_Options_Page {
                             <p><a href="#" class="bb-admin-button-primary" target="_blank"><?php _e('Get Support', 'bricksbooster'); ?></a></p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <?php
-    }
-
-    private function render_templates_tab() {
-        $template_library_enabled = get_option('bbooster_template_library_enabled', 1);
-        ?>
-        <div class="bb-admin-settings-section">
-            <h3>Template Library Settings</h3>
-            <p>Enable/Disable the template library functionality.</p>
-
-            <div class="bb-admin-toggles-grid">
-                <div class="bb-admin-toggle">
-                    <label>
-                        <input type="checkbox" name="bbooster_template_library_enabled" value="1" <?php checked($template_library_enabled, 1); ?>>
-                        <span class="toggle-switch"></span>
-                        <span class="toggle-label">Template Library</span>
-                        <span class="tooltip">
-                            <span class="tooltip-icon">?</span>
-                            <span class="tooltip-text">Enable the BricksBooster template library with pre-designed templates</span>
-                        </span>
-                    </label>
-                </div>
-            </div>
-        </div>
-        <?php
-    }
-
-    private function render_tags_tab() {
-        $post_tags_enabled = get_option('bbooster_post_tags_enabled', 1);
-        $media_tags_enabled = get_option('bbooster_media_tags_enabled', 1);
-        $math_tags_enabled = get_option('bbooster_math_tags_enabled', 1);
-        ?>
-        <div class="bb-admin-settings-section">
-            <h3>Custom Tags Settings</h3>
-            <p>Enable/Disable custom HTML/CSS tags functionality.</p>
-
-            <div class="bb-admin-toggles-grid">
-                <div class="bb-admin-toggle">
-                    <label>
-                        <input type="checkbox" name="bbooster_post_tags_enabled" value="1" <?php checked($post_tags_enabled, 1); ?>>
-                        <span class="toggle-switch"></span>
-                        <span class="toggle-label">Post Tags</span>
-                        <span class="tooltip">
-                            <span class="tooltip-icon">?</span>
-                            <span class="tooltip-text">Enable additional HTML/CSS tags in the Bricks builder</span>
-                        </span>
-                    </label>
-                    <hr style="margin: 15px 0;"/>
-                    <div>
-                        <h3>Post Tags List</h3>
-                        <ul column="2">
-                            <li>✓ Post Reading Time</li>
-                            <li>✓ Post Word Count</li>
-                            <li>✓ Post Character Count</li>
-                            <li>✓ Post Excerpt Word Count</li>
-                            <li>✓ Post First Image URL</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="bb-admin-toggle">
-                    <label>
-                        <input type="checkbox" name="bbooster_media_tags_enabled" value="1" <?php checked($media_tags_enabled, 1); ?>>
-                        <span class="toggle-switch"></span>
-                        <span class="toggle-label">Media Tags</span>
-                        <span class="tooltip">
-                            <span class="tooltip-icon">?</span>
-                            <span class="tooltip-text">Media Library Images tags in the Bricks builder</span>
-                        </span>
-                    </label>
-                    <hr style="margin: 15px 0;"/>
-                    <div>
-                        <h3>Media Tags List</h3>
-                        <ul column="2">
-                            <li>✓ Media Library Images</li>
-                            <li>✓ Media Library Videos</li>
-                            <li>✓ Media Library Audio</li>
-                            <li>✓ Media Library Documents</li>
-                            <li>✓ Media Library PDF</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="bb-admin-toggles-grid">
-                <div class="bb-admin-toggle">
-                    <label>
-                        <input type="checkbox" name="bbooster_math_tags_enabled" value="1" <?php checked($math_tags_enabled, 1); ?>>
-                        <span class="toggle-switch"></span>
-                        <span class="toggle-label">Math Tags</span>
-                        <span class="tooltip">
-                            <span class="tooltip-icon">?</span>
-                            <span class="tooltip-text">Math tags in the Bricks builder</span>
-                        </span>
-                    </label>
-                </div>
-            </div>
-        </div>
-        <?php
-    }
-
-    private function render_elements_tab() {
-        ?>
-        <div class="bb-admin-settings-section">
-            <h3>Custom Elements Settings</h3>
-            <p>Enable/Disable custom elements functionality.</p>
-            <div class="bb-admin-toggles-grid">
-                <?php
-                $elements = [
-                    'nestable_list' => [
-                        'label' => 'Nestable List',
-                        'tooltip' => 'Enable nestable list element'
-                    ],
-                    'nestable_link' => [
-                        'label' => 'Nestable Link',
-                        'tooltip' => 'Enable nestable link element'
-                    ],
-                    'simple_list' => [
-                        'label' => 'Simple List',
-                        'tooltip' => 'Enable simple list element'
-                    ],
-                ];
-
-                foreach ($elements as $key => $element) {
-                    $enabled = get_option('bricksbooster_' . $key . '_enabled', 1);
-                    ?>
-                    <div class="bb-admin-toggle">
-                        <label>
-                            <input type="checkbox" name="bricksbooster_<?php echo esc_attr($key); ?>_enabled" value="1" <?php checked($enabled, 1); ?>>
-                            <span class="toggle-switch"></span>
-                            <span class="toggle-label"><?php echo esc_html($element['label']); ?></span>
-                            <span class="tooltip">
-                                <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text"><?php echo esc_html($element['tooltip']); ?></span>
-                            </span>
-                        </label>
-                    </div>
-                    <?php
-                }
-                ?>
-            </div>
-        </div>
-        <?php
-    }
-
-    private function render_builder_tweaks_tab() {
-        $features = [
-            'code_to_bricks' => 'Code to Bricks Converter',
-            'html_validator' => 'HTML Visual Validator',
-            'link_indicator' => 'Link Indicator'
-        ];
-        
-        ?>
-        <div class="bb-admin-settings-section">
-            <h3>Builder Tweaks Settings</h3>
-            <p>Enable/Disable builder enhancement tools.</p>
-            
-            <div class="bb-admin-toggles-grid">
-                <?php foreach ($features as $feature_key => $feature_name) : ?>
-                    <?php $feature_enabled = get_option('bbooster_' . $feature_key . '_enabled', 1); ?>
-                    <div class="bb-admin-toggle">
-                        <label>
-                            <input type="checkbox" name="bbooster_<?php echo $feature_key; ?>_enabled" value="1" <?php checked($feature_enabled, 1); ?>>
-                            <span class="toggle-switch"></span>
-                            <span class="toggle-label"><?php echo $feature_name; ?></span>
-                            <span class="tooltip">
-                                <span class="tooltip-icon">?</span>
-                                <span class="tooltip-text"><?php echo $feature_name; ?></span>
-                            </span>
-                        </label>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-        <?php
-    }
-
-    private function render_query_loops_tab() {
-        $comments_query_enabled = get_option('bricksbooster_comments_query_enabled', 1);
-        $woocommerce_orders_query_enabled = get_option('bricksbooster_woocommerce_orders_query_enabled', 1);
-        ?>
-        <div class="bb-admin-settings-section">
-            <h3>Query Loops Settings</h3>
-            <p>Enable/Disable query loop functionality in Bricks.</p>
-            
-            <div class="bb-admin-toggles-grid">
-                <div class="bb-admin-toggle">
-                    <label>
-                        <input type="checkbox" name="bricksbooster_comments_query_enabled" value="1" <?php checked($comments_query_enabled, 1); ?>>
-                        <span class="toggle-switch"></span>
-                        <span class="toggle-label">Comments Query</span>
-                        <span class="tooltip">
-                            <span class="tooltip-icon">?</span>
-                            <span class="tooltip-text">Enable comments query functionality in Bricks builder</span>
-                        </span>
-                    </label>
-                </div>
-                <div class="bb-admin-toggle">
-                    <label>
-                        <input type="checkbox" name="bricksbooster_woocommerce_orders_query_enabled" value="1" <?php checked($woocommerce_orders_query_enabled, 1); ?>>
-                        <span class="toggle-switch"></span>
-                        <span class="toggle-label">WooCommerce Orders Query</span>
-                        <span class="tooltip">
-                            <span class="tooltip-icon">?</span>
-                            <span class="tooltip-text">Enable WooCommerce orders query functionality in Bricks builder</span>
-                        </span>
-                    </label>
                 </div>
             </div>
         </div>
