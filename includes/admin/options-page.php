@@ -20,7 +20,7 @@ add_action('admin_init', function() {
     // Register TEMPLATES settings
     register_setting($option_group, 'bbooster_template_library_enabled');
     // Register DYNAMIC TAGS settings
-    register_setting($option_group, 'bbooster_custom_tags_enabled');
+    register_setting($option_group, 'bbooster_post_tags_enabled');
     // Register ELEMENTS settings
     register_setting($option_group, 'bricksbooster_nestable_list_enabled');
     register_setting($option_group, 'bricksbooster_nestable_link_enabled');
@@ -28,6 +28,7 @@ add_action('admin_init', function() {
     // Register QUERY LOOPS settings
     register_setting($option_group, 'bricksbooster_query_loops_enabled');
     register_setting($option_group, 'bricksbooster_comments_query_enabled');
+    register_setting($option_group, 'bricksbooster_woocommerce_orders_query_enabled');
     
     // Register BUILDER TWEAKS settings from features array
     $features = [
@@ -202,7 +203,7 @@ class BricksBooster_Options_Page {
     }
 
     private function render_tags_tab() {
-        $custom_tags_enabled = get_option('bbooster_custom_tags_enabled', 1);
+        $custom_tags_enabled = get_option('bbooster_post_tags_enabled', 1);
         ?>
         <div class="bb-admin-settings-section">
             <h3>Custom Tags Settings</h3>
@@ -211,14 +212,25 @@ class BricksBooster_Options_Page {
             <div class="bb-admin-toggles-grid">
                 <div class="bb-admin-toggle">
                     <label>
-                        <input type="checkbox" name="bbooster_custom_tags_enabled" value="1" <?php checked($custom_tags_enabled, 1); ?>>
+                        <input type="checkbox" name="bbooster_post_tags_enabled" value="1" <?php checked($custom_tags_enabled, 1); ?>>
                         <span class="toggle-switch"></span>
-                        <span class="toggle-label">Custom Tags</span>
+                        <span class="toggle-label">Post Tags</span>
                         <span class="tooltip">
                             <span class="tooltip-icon">?</span>
                             <span class="tooltip-text">Enable additional HTML/CSS tags in the Bricks builder</span>
                         </span>
                     </label>
+                    <hr style="margin: 15px 0;"/>
+                    <div>
+                        <h3>Post Tags List</h3>
+                        <ul column="2">
+                            <li>✓ Post Reading Time</li>
+                            <li>✓ Post Word Count</li>
+                            <li>✓ Post Character Count</li>
+                            <li>✓ Post Excerpt Word Count</li>
+                            <li>✓ Post First Image URL</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -302,8 +314,8 @@ class BricksBooster_Options_Page {
     }
 
     private function render_query_loops_tab() {
-        $query_loops_enabled = get_option('bricksbooster_query_loops_enabled', 1);
         $comments_query_enabled = get_option('bricksbooster_comments_query_enabled', 1);
+        $woocommerce_orders_query_enabled = get_option('bricksbooster_woocommerce_orders_query_enabled', 1);
         ?>
         <div class="bb-admin-settings-section">
             <h3>Query Loops Settings</h3>
@@ -318,6 +330,17 @@ class BricksBooster_Options_Page {
                         <span class="tooltip">
                             <span class="tooltip-icon">?</span>
                             <span class="tooltip-text">Enable comments query functionality in Bricks builder</span>
+                        </span>
+                    </label>
+                </div>
+                <div class="bb-admin-toggle">
+                    <label>
+                        <input type="checkbox" name="bricksbooster_woocommerce_orders_query_enabled" value="1" <?php checked($woocommerce_orders_query_enabled, 1); ?>>
+                        <span class="toggle-switch"></span>
+                        <span class="toggle-label">WooCommerce Orders Query</span>
+                        <span class="tooltip">
+                            <span class="tooltip-icon">?</span>
+                            <span class="tooltip-text">Enable WooCommerce orders query functionality in Bricks builder</span>
                         </span>
                     </label>
                 </div>

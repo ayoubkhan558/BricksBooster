@@ -11,6 +11,10 @@ class BricksBooster_Query_Loops {
                 'file'  => 'comments-loop.php',
                 'class' => 'BricksBooster_Query_Loops_Comments_Loop',
             ],
+            'woocommerce_orders' => [
+                'file'  => 'woocommerce-orders-loop.php',
+                'class' => 'BricksBooster_Query_Loops_WooCommerce_Orders',
+            ],
             // Add more dynamic tags here as needed
         ];
 

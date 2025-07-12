@@ -9,7 +9,7 @@ class BricksBooster_Query_Loops_Comments_Loop {
     }
 
     public function bl_setup_query_controls($control_options) {
-        $control_options['queryTypes']['goodmonks_crp_query'] = esc_html__('GoodMonks: CRP');
+        $control_options['queryTypes']['goodmonks_crp_query'] = esc_html__('Comments');
         return $control_options;
     }
 
