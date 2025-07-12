@@ -24,7 +24,10 @@ add_action('admin_init', function() {
     // Register ELEMENTS settings
     register_setting($option_group, 'bricksbooster_nestable_list_enabled');
     register_setting($option_group, 'bricksbooster_nestable_link_enabled');
-    register_setting($option_group, 'bricksbooster_simple_list_enabled'); 
+    register_setting($option_group, 'bricksbooster_simple_list_enabled');     
+    // Register QUERY LOOPS settings
+    register_setting($option_group, 'bricksbooster_query_loops_enabled');
+    register_setting($option_group, 'bricksbooster_comments_query_enabled');
     
     // Register BUILDER TWEAKS settings from features array
     $features = [
@@ -112,6 +115,7 @@ class BricksBooster_Options_Page {
                         <button type="button" data-tab="tags" class="bb-admin-nav-tab">Tags</button>
                         <button type="button" data-tab="elements" class="bb-admin-nav-tab">Elements</button>
                         <button type="button" data-tab="templates" class="bb-admin-nav-tab">Templates</button>
+                        <button type="button" data-tab="query-loops" class="bb-admin-nav-tab">Query Loops</button>
                     </nav>
                     
                     <div class="bb-admin-tab-content">
@@ -134,6 +138,9 @@ class BricksBooster_Options_Page {
                             </div>
                             <div id="elements" class="bb-admin-tab-pane">
                                 <?php $this->render_elements_tab(); ?>
+                            </div>
+                            <div id="query-loops" class="bb-admin-tab-pane">
+                                <?php $this->render_query_loops_tab(); ?>
                             </div>
                             
                             <?php submit_button('Save All Settings'); ?>
@@ -289,6 +296,31 @@ class BricksBooster_Options_Page {
                         </label>
                     </div>
                 <?php endforeach; ?>
+            </div>
+        </div>
+        <?php
+    }
+
+    private function render_query_loops_tab() {
+        $query_loops_enabled = get_option('bricksbooster_query_loops_enabled', 1);
+        $comments_query_enabled = get_option('bricksbooster_comments_query_enabled', 1);
+        ?>
+        <div class="bb-admin-settings-section">
+            <h3>Query Loops Settings</h3>
+            <p>Enable/Disable query loop functionality in Bricks.</p>
+            
+            <div class="bb-admin-toggles-grid">
+                <div class="bb-admin-toggle">
+                    <label>
+                        <input type="checkbox" name="bricksbooster_comments_query_enabled" value="1" <?php checked($comments_query_enabled, 1); ?>>
+                        <span class="toggle-switch"></span>
+                        <span class="toggle-label">Comments Query</span>
+                        <span class="tooltip">
+                            <span class="tooltip-icon">?</span>
+                            <span class="tooltip-text">Enable comments query functionality in Bricks builder</span>
+                        </span>
+                    </label>
+                </div>
             </div>
         </div>
         <?php

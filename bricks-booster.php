@@ -55,6 +55,10 @@ class BricksBooster {
             'dynamic_tags' => [
                 'file' => 'class-dynamic-tags.php',
                 'class' => 'BricksBooster_Dynamic_Tags'
+            ],
+            'query_loops' => [
+                'file' => 'query-loops.php',
+                'class' => 'BricksBooster_Query_Loops'
             ]
         ];
 
