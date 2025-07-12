@@ -21,6 +21,8 @@ add_action('admin_init', function() {
     register_setting($option_group, 'bbooster_template_library_enabled');
     // Register DYNAMIC TAGS settings
     register_setting($option_group, 'bbooster_post_tags_enabled');
+    register_setting($option_group, 'bbooster_media_tags_enabled');
+    register_setting($option_group, 'bbooster_math_tags_enabled');
     // Register ELEMENTS settings
     register_setting($option_group, 'bricksbooster_nestable_list_enabled');
     register_setting($option_group, 'bricksbooster_nestable_link_enabled');
@@ -203,7 +205,9 @@ class BricksBooster_Options_Page {
     }
 
     private function render_tags_tab() {
-        $custom_tags_enabled = get_option('bbooster_post_tags_enabled', 1);
+        $post_tags_enabled = get_option('bbooster_post_tags_enabled', 1);
+        $media_tags_enabled = get_option('bbooster_media_tags_enabled', 1);
+        $math_tags_enabled = get_option('bbooster_math_tags_enabled', 1);
         ?>
         <div class="bb-admin-settings-section">
             <h3>Custom Tags Settings</h3>
@@ -212,7 +216,7 @@ class BricksBooster_Options_Page {
             <div class="bb-admin-toggles-grid">
                 <div class="bb-admin-toggle">
                     <label>
-                        <input type="checkbox" name="bbooster_post_tags_enabled" value="1" <?php checked($custom_tags_enabled, 1); ?>>
+                        <input type="checkbox" name="bbooster_post_tags_enabled" value="1" <?php checked($post_tags_enabled, 1); ?>>
                         <span class="toggle-switch"></span>
                         <span class="toggle-label">Post Tags</span>
                         <span class="tooltip">
@@ -231,6 +235,41 @@ class BricksBooster_Options_Page {
                             <li>✓ Post First Image URL</li>
                         </ul>
                     </div>
+                </div>
+                <div class="bb-admin-toggle">
+                    <label>
+                        <input type="checkbox" name="bbooster_media_tags_enabled" value="1" <?php checked($media_tags_enabled, 1); ?>>
+                        <span class="toggle-switch"></span>
+                        <span class="toggle-label">Media Tags</span>
+                        <span class="tooltip">
+                            <span class="tooltip-icon">?</span>
+                            <span class="tooltip-text">Media Library Images tags in the Bricks builder</span>
+                        </span>
+                    </label>
+                    <hr style="margin: 15px 0;"/>
+                    <div>
+                        <h3>Media Tags List</h3>
+                        <ul column="2">
+                            <li>✓ Media Library Images</li>
+                            <li>✓ Media Library Videos</li>
+                            <li>✓ Media Library Audio</li>
+                            <li>✓ Media Library Documents</li>
+                            <li>✓ Media Library PDF</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="bb-admin-toggles-grid">
+                <div class="bb-admin-toggle">
+                    <label>
+                        <input type="checkbox" name="bbooster_math_tags_enabled" value="1" <?php checked($math_tags_enabled, 1); ?>>
+                        <span class="toggle-switch"></span>
+                        <span class="toggle-label">Math Tags</span>
+                        <span class="tooltip">
+                            <span class="tooltip-icon">?</span>
+                            <span class="tooltip-text">Math tags in the Bricks builder</span>
+                        </span>
+                    </label>
                 </div>
             </div>
         </div>
