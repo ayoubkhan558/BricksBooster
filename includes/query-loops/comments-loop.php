@@ -31,14 +31,11 @@ class BricksBooster_Query_Loops_Comments_Loop {
 
     private function run_first_query() {
         $args = [
-            'post_type' => 'post',
+            'post_type' => 'page',
             'posts_per_page' => 6,
         ];
 
-        $posts_query = new CRP_Query($args);
+        $posts_query = new WP_Query($args);
         return $posts_query->posts;
     }
 }
-
-// Initialize the class
-// new BricksBooster_Query_Loops_Comments_Loop();
