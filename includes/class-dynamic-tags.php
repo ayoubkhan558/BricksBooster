@@ -16,6 +16,10 @@ class BricksBooster_Dynamic_Tags {
                 'file'  => 'media-tags.php',
                 'class' => 'BricksBooster_Dynamic_Media_Tags',
             ],
+            'math_tags' => [
+                'file'  => 'tag-math.php',
+                'class' => 'BricksBooster_Math_Calculator_Tag',
+            ],
             // Add more dynamic tags here as needed
         ];
 
