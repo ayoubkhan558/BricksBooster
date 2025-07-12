@@ -46,15 +46,30 @@ class BricksBooster_Math_Calculator_Tag {
     }
 
     private function evaluate_math( $expression ) {
-        // Remove any non-math characters
+        // First, let's check if this contains any non-numeric values that should be concatenated
+        $parts = preg_split('/[\+\-\*\/]/', $expression);
+        $has_non_numeric = false;
+        
+        foreach ($parts as $part) {
+            $part = trim($part);
+            if (!empty($part) && !is_numeric($part)) {
+                $has_non_numeric = true;
+                break;
+            }
+        }
+        
+        // If we have non-numeric parts, treat + as concatenation
+        if ($has_non_numeric) {
+            return $this->handle_string_concatenation($expression);
+        }
+        
+        // Original numeric math logic
         $clean = preg_replace( '/[^0-9+\-*\/\(\).\s]/', '', $expression );
         
-        // Validate
         if ( empty( $clean ) || ! preg_match( '/[0-9]/', $clean ) ) {
             return $expression;
         }
         
-        // Check for division by zero
         if ( preg_match( '/\/\s*0(?!\d)/', $clean ) ) {
             return $expression;
         }
@@ -63,7 +78,6 @@ class BricksBooster_Math_Calculator_Tag {
             $result = eval( "return $clean;" );
             
             if ( is_numeric( $result ) ) {
-                // Format the result
                 if ( is_float( $result ) && $result != (int) $result ) {
                     return round( $result, 2 );
                 } else {
@@ -75,6 +89,29 @@ class BricksBooster_Math_Calculator_Tag {
         } catch ( Exception $e ) {
             return $expression;
         }
+    }
+    
+    private function handle_string_concatenation($expression) {
+        // Only handle + operator for string concatenation
+        // Return original expression if it contains -, *, / with strings
+        if (preg_match('/[\-\*\/]/', $expression)) {
+            return $expression;
+        }
+        
+        // Split by + and concatenate the parts
+        $parts = explode('+', $expression);
+        $result = '';
+        
+        foreach ($parts as $part) {
+            $part = trim($part);
+            if (is_numeric($part)) {
+                $result .= $part;
+            } else {
+                $result .= $part; // Keep the string as is
+            }
+        }
+        
+        return $result;
     }
 }
 
