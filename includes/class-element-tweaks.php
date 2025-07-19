@@ -66,6 +66,10 @@ class BricksBooster_Element_Tweaks {
                 'file'  => 'animation-baffle.php',
                 'class' => 'BricksBooster_Element_Tweaks_14',
             ],
+            'gsap' => [
+                'file'  => 'animation-gsap.php',
+                'class' => 'BricksBooster_Element_Tweaks_15',
+            ],
             // 'animation-tweak-3' => [
             //     'file'  => 'animation-tweak-3.php',
             //     'class' => 'BricksBooster_Element_Tweaks_3',
