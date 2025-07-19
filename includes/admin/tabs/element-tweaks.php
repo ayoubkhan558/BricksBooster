@@ -17,6 +17,7 @@ class BricksBooster_Element_Tweaks_Tab {
             'atropos' => 'Atropos.js 3D Hover',
             'vanilla_tilt' => 'Vanilla Tilt.js',
             'ztext' => 'Ztext.js 3D Text',
+            'splitting' => 'Splitting.js Text & Image Animation',
             // Add more tweaks here as needed
         ];
         ?>

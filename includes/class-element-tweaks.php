@@ -54,6 +54,10 @@ class BricksBooster_Element_Tweaks {
                 'file'  => 'animation-ztext.php',
                 'class' => 'BricksBooster_Element_Tweaks_11',
             ],
+            'splitting' => [
+                'file'  => 'animation-splitting.php',
+                'class' => 'BricksBooster_Element_Tweaks_12',
+            ],
             // 'animation-tweak-3' => [
             //     'file'  => 'animation-tweak-3.php',
             //     'class' => 'BricksBooster_Element_Tweaks_3',

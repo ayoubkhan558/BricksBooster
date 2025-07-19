@@ -42,6 +42,7 @@ add_action('admin_init', function() {
     register_setting($option_group, 'bbooster_atropos_enabled', 'intval');
     register_setting($option_group, 'bbooster_vanilla_tilt_enabled', 'intval');
     register_setting($option_group, 'bbooster_ztext_enabled', 'intval');
+    register_setting($option_group, 'bbooster_splitting_enabled', 'intval');
     
     // Register BUILDER TWEAKS settings from features array
     $features = [
@@ -59,6 +60,7 @@ add_action('admin_init', function() {
         'atropos' => 'Atropos.js 3D Hover',
         'vanilla_tilt' => 'Vanilla Tilt.js',
         'ztext' => 'Ztext.js 3D Text',
+        'splitting' => 'Splitting.js Text & Image Animation',
     ];
     
     foreach ($features as $feature_key => $feature_name) {
