@@ -58,6 +58,10 @@ class BricksBooster_Element_Tweaks {
                 'file'  => 'animation-splitting.php',
                 'class' => 'BricksBooster_Element_Tweaks_12',
             ],
+            'textillate' => [
+                'file'  => 'animation-textillate.php',
+                'class' => 'BricksBooster_Element_Tweaks_13',
+            ],
             // 'animation-tweak-3' => [
             //     'file'  => 'animation-tweak-3.php',
             //     'class' => 'BricksBooster_Element_Tweaks_3',

@@ -18,6 +18,7 @@ class BricksBooster_Element_Tweaks_Tab {
             'vanilla_tilt' => 'Vanilla Tilt.js',
             'ztext' => 'Ztext.js 3D Text',
             'splitting' => 'Splitting.js Text & Image Animation',
+            'textillate' => 'Textillate.js Text Animation',
             // Add more tweaks here as needed
         ];
         ?>
