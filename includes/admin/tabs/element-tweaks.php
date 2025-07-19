@@ -15,6 +15,7 @@ class BricksBooster_Element_Tweaks_Tab {
             'rellax' => 'Rellax.js Animations',
             'locomotive' => 'Locomotive Scroll',
             'atropos' => 'Atropos.js 3D Hover',
+            'vanilla_tilt' => 'Vanilla Tilt.js',
             // Add more tweaks here as needed
         ];
         ?>

@@ -46,6 +46,10 @@ class BricksBooster_Element_Tweaks {
                 'file'  => 'animation-atropos.php',
                 'class' => 'BricksBooster_Element_Tweaks_9',
             ],
+            'vanilla_tilt' => [
+                'file'  => 'animation-vanilla-tilt.php',
+                'class' => 'BricksBooster_Element_Tweaks_10',
+            ],
             // 'animation-tweak-3' => [
             //     'file'  => 'animation-tweak-3.php',
             //     'class' => 'BricksBooster_Element_Tweaks_3',
