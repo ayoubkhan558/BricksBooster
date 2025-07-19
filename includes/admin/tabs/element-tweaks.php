@@ -7,7 +7,7 @@ class BricksBooster_Element_Tweaks_Tab {
     public function render() {
         $tweaks = [
             'animation_tweak' => 'Animation Tweak',
-            'animation_tweak_2' => 'Animation Tweak 2',
+            'animation_aos_tweak' => 'AOS Animations',
             'animation_tweak_3' => 'Animation Tweak 3',
             // Add more tweaks here as needed
         ];

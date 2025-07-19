@@ -14,9 +14,13 @@ class BricksBooster_Element_Tweaks {
                 'file'  => 'animation-tweak.php',
                 'class' => 'BricksBooster_Element_Tweaks_1',
             ],
-            'animation-tweak-2' => [
-                'file'  => 'animation-tweak-2.php',
+            'animation_aos_tweak' => [
+                'file'  => 'animation-aos-tweak.php',
                 'class' => 'BricksBooster_Element_Tweaks_2',
+            ],
+            'laxjs_animation' => [
+                'file'  => 'animation-laxjs.php',
+                'class' => 'BricksBooster_Element_Tweaks_3',
             ],
             // 'animation-tweak-3' => [
             //     'file'  => 'animation-tweak-3.php',
@@ -26,8 +30,12 @@ class BricksBooster_Element_Tweaks {
 
         foreach ($features as $key => $feature) {
             // Only load if feature is enabled in settings (default to enabled)
-            if (get_option('bbooster_' . $key . '_enabled', 1)) {
+            $option_name = 'bbooster_' . $key . '_enabled';
+            $is_enabled = get_option($option_name, 1);
+            
+            if ($is_enabled) {
                 $file_path = BRICKSBOOSTER_DIR . 'includes/element-tweaks/' . $feature['file'];
+                
                 if (file_exists($file_path)) {
                     require_once $file_path;
                     $class_name = $feature['class'];

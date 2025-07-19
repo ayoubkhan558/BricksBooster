@@ -1,8 +1,10 @@
 <?php
 class BricksBooster_Element_Tweaks_2 {
     public function __construct() {
+        error_log('BricksBooster AOS: Constructor called');
         // Only initialize if enabled in settings
-        if (get_option('bricksbooster_element_tweaker_animation_2_enabled', true)) {
+        if (get_option('bbooster_animation_aos_tweak_enabled', true)) {
+            error_log('BricksBooster AOS: Feature is enabled, setting up hooks');
             add_action('wp_enqueue_scripts', [$this, 'enqueue_aos_assets']);
             add_action('init', [$this, 'add_custom_controls'], 30);
             add_filter('bricks/frontend/render_element', [$this, 'render_custom_animation'], 10, 2);
@@ -14,22 +16,38 @@ class BricksBooster_Element_Tweaks_2 {
      * Enqueue AOS assets
      */
     public function enqueue_aos_assets() {
-        // AOS CSS
-        wp_enqueue_style(
-            'aos-css',
-            'https://unpkg.com/aos@2.3.1/dist/aos.css',
-            [],
-            '2.3.1'
-        );
+        error_log('BricksBooster AOS: Enqueuing AOS assets');
+        
+        // Check if we're in admin or frontend
+        $is_admin = is_admin();
+        $is_bricks_builder = isset($_GET['bricks']) && $_GET['bricks'] === 'run';
+        
+        // Only enqueue if we're in the frontend or Bricks Builder
+        if (!wp_script_is('aos-js', 'enqueued') && (!$is_admin || $is_bricks_builder)) {
+            // AOS CSS
+            wp_enqueue_style(
+                'aos-css',
+                'https://unpkg.com/aos@2.3.1/dist/aos.css',
+                [],
+                '2.3.1'
+            );
+            error_log('BricksBooster AOS: Enqueued AOS CSS');
 
-        // AOS JavaScript
-        wp_enqueue_script(
-            'aos-js',
-            'https://unpkg.com/aos@2.3.1/dist/aos.js',
-            [],
-            '2.3.1',
-            true
-        );
+            // AOS JavaScript
+            wp_enqueue_script(
+                'aos-js',
+                'https://unpkg.com/aos@2.3.1/dist/aos.js',
+                [],
+                '2.3.1',
+                true
+            );
+            error_log('BricksBooster AOS: Enqueued AOS JS');
+            
+            // Add inline script to initialize AOS
+            add_action('wp_footer', function() {
+                echo '<script>document.addEventListener("DOMContentLoaded", function() { if (typeof AOS !== "undefined") { AOS.init({ duration: 800, once: true }); } });</script>';
+            }, 999);
+        }
     }
 
     /**
@@ -76,8 +94,8 @@ class BricksBooster_Element_Tweaks_2 {
     public function add_control_groups($control_groups) {
         $control_groups['bricksbooster_animation'] = [
             'tab'   => 'style',
-            'title' => esc_html__('Animations', 'bricks-booster'),
-            'icon'  => 'ti-layers', // Using Tabler icon
+            'title' => esc_html__('AOS Animations ', 'bricks-booster'),
+            'priority' => 20, // Second position
         ];
 
         return $control_groups;

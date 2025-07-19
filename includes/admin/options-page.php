@@ -32,6 +32,8 @@ add_action('admin_init', function() {
     
         // Register ELEMENT TWEAKS settings
     register_setting($option_group, 'bbooster_animation_tweak_enabled', 'intval');
+    register_setting($option_group, 'bbooster_animation_aos_tweak_enabled', 'intval');
+    register_setting($option_group, 'bbooster_laxjs_animation_enabled', 'intval');
     
     // Register BUILDER TWEAKS settings from features array
     $features = [
@@ -39,6 +41,8 @@ add_action('admin_init', function() {
         'html_validator' => 'HTML Visual Validator',
         'link_indicator' => 'Link Indicator',
         'animation_tweak' => 'Animation Tweak',
+        'animation_aos_tweak' => 'AOS Animations',
+        'laxjs_animation' => 'Lax.js Animations',
     ];
     
     foreach ($features as $feature_key => $feature_name) {

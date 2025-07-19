@@ -3,4 +3,77 @@
     --bricksbooster-primary: #4a6cf7;
     --bricksbooster-text: #333;
     --bricksbooster-border: #e0e0e0;
+
+    --builder-bg-1: #1a1a1a;
+    --builder-bg-2: #1a1a1a;
+    --builder-bg-3: #1a1a1a;
+}
+
+
+
+#bricks-panel-elements li[data-element-name*="bricksbooster_"]:after,
+#bricks-structure .structure-item>.title .bricksbooster-element:after,
+[data-control-group^='bricksbooster_'] .control-group-title:after {
+    background: var(--builder-bg-2);
+    border-bottom-right-radius: 4px;
+    color: var(--builder-color);
+    content: "Booster";
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-family: Roboto, Arial, Helvetica, Verdana, sans-serif;
+    font-size: 8px;
+    position: absolute;
+    height: 18px;
+    width: 60px;
+    max-width: 100px;
+    z-index: 1;
+}
+
+#bricks-panel-elements li[data-element-name*="bricksbooster_"]:after {
+    border-top-left-radius: 4px;
+    top: 1px;
+    left: 1px;
+}
+
+#bricks-panel-elements li[data-element-name*="bricksbooster_"]:hover:after,
+#bricks-structure .element.active>.structure-item>.title .bricksbooster-element:after,
+#bricks-structure .structure-item:hover>.title .bricksbooster-element:after {
+    background: var(--builder-bg-2);
+}
+
+#bricks-structure .structure-item>.title .bricksbooster-element:after,
+[data-control-group^='bricksbooster_'] .control-group-title:after {
+    border-top-right-radius: 4px;
+    top: 50%;
+    right: 5px;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+[data-control-group^='bricksbooster_'] .control-group-title:after {
+    right: 40px;
+}
+
+[data-control-group^='bricksbooster_'].open .control-group-title:after,
+[data-control-group^='bricksbooster_']:hover .control-group-title:after {
+    background: var(--builder-bg);
+}
+
+.bricks-panel-controls div[data-controlkey$="Separator"] {
+    padding: 0 0 10px 0;
+}
+
+.bricks-panel-controls div[data-controlkey$="onPageLoad"] {
+    margin-top: 18px;
+}
+
+[data-control=conditions] .item textarea {
+    background-color: var(--builder-bg-3);
 }
