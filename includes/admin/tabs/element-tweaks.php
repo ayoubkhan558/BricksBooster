@@ -16,6 +16,7 @@ class BricksBooster_Element_Tweaks_Tab {
             'locomotive' => 'Locomotive Scroll',
             'atropos' => 'Atropos.js 3D Hover',
             'vanilla_tilt' => 'Vanilla Tilt.js',
+            'ztext' => 'Ztext.js 3D Text',
             // Add more tweaks here as needed
         ];
         ?>

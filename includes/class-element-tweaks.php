@@ -50,6 +50,10 @@ class BricksBooster_Element_Tweaks {
                 'file'  => 'animation-vanilla-tilt.php',
                 'class' => 'BricksBooster_Element_Tweaks_10',
             ],
+            'ztext' => [
+                'file'  => 'animation-ztext.php',
+                'class' => 'BricksBooster_Element_Tweaks_11',
+            ],
             // 'animation-tweak-3' => [
             //     'file'  => 'animation-tweak-3.php',
             //     'class' => 'BricksBooster_Element_Tweaks_3',
