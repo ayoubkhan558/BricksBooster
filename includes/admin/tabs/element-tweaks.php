@@ -12,6 +12,7 @@ class BricksBooster_Element_Tweaks_Tab {
             'scrollreveal' => 'ScrollReveal Animations',
             'scrollout' => 'ScrollOut Animations',
             'sal' => 'SAL.js Animations',
+            'rellax' => 'Rellax.js Animations',
             // Add more tweaks here as needed
         ];
         ?>
