@@ -59,7 +59,11 @@ class BricksBooster {
             'query_loops' => [
                 'file' => 'query-loops.php',
                 'class' => 'BricksBooster_Query_Loops'
-            ]
+            ],
+            'query_loops' => [
+                'file' => 'class-element-tweaks.php',
+                'class' => 'BricksBooster_Element_Tweaks'
+            ],
         ];
 
         foreach ($modules as $key => $module) {

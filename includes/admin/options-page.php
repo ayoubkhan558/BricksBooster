@@ -30,11 +30,15 @@ add_action('admin_init', function() {
     register_setting($option_group, 'bricksbooster_comments_query_enabled');
     register_setting($option_group, 'bricksbooster_woocommerce_orders_query_enabled');
     
+        // Register ELEMENT TWEAKS settings
+    register_setting($option_group, 'bbooster_animation_tweak_enabled', 'intval');
+    
     // Register BUILDER TWEAKS settings from features array
     $features = [
         'code_to_bricks' => 'Code to Bricks Converter',
         'html_validator' => 'HTML Visual Validator',
-        'link_indicator' => 'Link Indicator'
+        'link_indicator' => 'Link Indicator',
+        'animation_tweak' => 'Animation Tweak',
     ];
     
     foreach ($features as $feature_key => $feature_name) {
@@ -48,6 +52,7 @@ require_once BRICKSBOOSTER_PATH . 'includes/admin/tabs/tags.php';
 require_once BRICKSBOOSTER_PATH . 'includes/admin/tabs/elements.php';
 require_once BRICKSBOOSTER_PATH . 'includes/admin/tabs/builder-tweaks.php';
 require_once BRICKSBOOSTER_PATH . 'includes/admin/tabs/query-loops.php';
+require_once BRICKSBOOSTER_PATH . 'includes/admin/tabs/element-tweaks.php';
 
 class BricksBooster_Options_Page {
     private $tabs = [];
@@ -58,6 +63,7 @@ class BricksBooster_Options_Page {
             'templates' => new BricksBooster_Templates_Tab(),
             'tags' => new BricksBooster_Tags_Tab(),
             'elements' => new BricksBooster_Elements_Tab(),
+            'element-tweaks' => new BricksBooster_Element_Tweaks_Tab(),
             'builder-tweaks' => new BricksBooster_Builder_Tweaks_Tab(),
             'query-loops' => new BricksBooster_Query_Loops_Tab()
         ];
