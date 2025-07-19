@@ -191,7 +191,6 @@ class BricksBooster_Element_Tweaks_9 {
         $control_groups['bricksbooster_atropos'] = [
             'tab'   => 'style',
             'title' => esc_html__('Atropos.js', 'bricks-booster'),
-            'icon'  => 'ti-layout-accordion-merged'
         ];
 
         return $control_groups;
@@ -211,7 +210,6 @@ class BricksBooster_Element_Tweaks_9 {
             'group' => 'bricksbooster_atropos',
             'label' => esc_html__('Enable Atropos', 'bricks-booster'),
             'type'  => 'checkbox',
-            'icon'  => 'ti-layout-accordion-merged'
         ];
 
         // Active Offset

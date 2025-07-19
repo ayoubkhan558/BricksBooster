@@ -110,8 +110,7 @@ class BricksBooster_Element_Tweaks_2 {
             'tab'   => 'style',
             'group' => 'bricksbooster_animation',
             'label' => esc_html__('Enable Animation', 'bricks-booster'),
-            'type'  => 'checkbox',
-            'icon'  => 'ti-layout-accordion-merged' // Using Tabler icon
+            'type'  => 'checkbox', // Using Tabler icon
         ];
 
         // Animation Type

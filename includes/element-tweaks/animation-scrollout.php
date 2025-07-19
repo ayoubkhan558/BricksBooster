@@ -81,7 +81,6 @@ class BricksBooster_Element_Tweaks_5 {
         $control_groups['bricksbooster_scrollout'] = [
             'tab'   => 'style',
             'title' => esc_html__('ScrollOut', 'bricks-booster'),
-            'icon'  => 'ti-layout-accordion-merged'
         ];
 
         return $control_groups;
@@ -97,7 +96,6 @@ class BricksBooster_Element_Tweaks_5 {
             'group' => 'bricksbooster_scrollout',
             'label' => esc_html__('Enable ScrollOut', 'bricks-booster'),
             'type'  => 'checkbox',
-            'icon'  => 'ti-layout-accordion-merged'
         ];
 
         // Animation type

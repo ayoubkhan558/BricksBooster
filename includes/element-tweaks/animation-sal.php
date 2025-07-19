@@ -77,7 +77,6 @@ class BricksBooster_Element_Tweaks_6 {
         $control_groups['bricksbooster_sal'] = [
             'tab'   => 'style',
             'title' => esc_html__('SAL Animations', 'bricks-booster'),
-            'icon'  => 'ti-layout-accordion-merged'
         ];
 
         return $control_groups;
@@ -93,7 +92,6 @@ class BricksBooster_Element_Tweaks_6 {
             'group' => 'bricksbooster_sal',
             'label' => esc_html__('Enable SAL', 'bricks-booster'),
             'type'  => 'checkbox',
-            'icon'  => 'ti-layout-accordion-merged'
         ];
 
         // Animation type

@@ -79,7 +79,6 @@ class BricksBooster_Element_Tweaks_7 {
         $control_groups['bricksbooster_rellax'] = [
             'tab'   => 'style',
             'title' => esc_html__('Rellax.js', 'bricks-booster'),
-            'icon'  => 'ti-layout-accordion-merged'
         ];
 
         return $control_groups;
@@ -95,7 +94,6 @@ class BricksBooster_Element_Tweaks_7 {
             'group' => 'bricksbooster_rellax',
             'label' => esc_html__('Enable Rellax', 'bricks-booster'),
             'type'  => 'checkbox',
-            'icon'  => 'ti-layout-accordion-merged'
         ];
 
         // Speed

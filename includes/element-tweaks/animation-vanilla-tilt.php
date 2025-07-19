@@ -112,7 +112,6 @@ class BricksBooster_Element_Tweaks_10 {
         $control_groups['bricksbooster_vanilla_tilt'] = [
             'tab'   => 'style',
             'title' => esc_html__('Vanilla Tilt.js', 'bricks-booster'),
-            'icon'  => 'ti-layout-accordion-merged'
         ];
 
         return $control_groups;
@@ -132,7 +131,6 @@ class BricksBooster_Element_Tweaks_10 {
             'group' => 'bricksbooster_vanilla_tilt',
             'label' => esc_html__('Enable Tilt Effect', 'bricks-booster'),
             'type'  => 'checkbox',
-            'icon'  => 'ti-layout-accordion-merged'
         ];
 
         // Max Tilt

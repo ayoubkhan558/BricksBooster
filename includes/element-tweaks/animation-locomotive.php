@@ -123,7 +123,6 @@ class BricksBooster_Element_Tweaks_8 {
         $control_groups['bricksbooster_locomotive'] = [
             'tab'   => 'style',
             'title' => esc_html__('Locomotive Scroll', 'bricks-booster'),
-            'icon'  => 'ti-layout-accordion-merged'
         ];
 
         return $control_groups;
@@ -139,7 +138,6 @@ class BricksBooster_Element_Tweaks_8 {
             'group' => 'bricksbooster_locomotive',
             'label' => esc_html__('Enable Locomotive', 'bricks-booster'),
             'type'  => 'checkbox',
-            'icon'  => 'ti-layout-accordion-merged'
         ];
 
         // Animation type

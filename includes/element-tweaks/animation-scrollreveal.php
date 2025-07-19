@@ -102,7 +102,6 @@ class BricksBooster_Element_Tweaks_4 {
         $control_groups['bricksbooster_scrollreveal'] = [
             'tab'   => 'style',
             'title' => esc_html__('ScrollReveal', 'bricks-booster'),
-            'icon'  => 'ti-layout-accordion-merged'
         ];
 
         return $control_groups;
@@ -118,7 +117,6 @@ class BricksBooster_Element_Tweaks_4 {
             'group' => 'bricksbooster_scrollreveal',
             'label' => esc_html__('Enable ScrollReveal', 'bricks-booster'),
             'type'  => 'checkbox',
-            'icon'  => 'ti-layout-accordion-merged'
         ];
 
         // Animation type
