@@ -19,6 +19,7 @@ class BricksBooster_Element_Tweaks_Tab {
             'ztext' => 'Ztext.js 3D Text',
             'splitting' => 'Splitting.js Text & Image Animation',
             'textillate' => 'Textillate.js Text Animation',
+            'baffle' => 'Baffle.js Text Obfuscation',
             // Add more tweaks here as needed
         ];
         ?>

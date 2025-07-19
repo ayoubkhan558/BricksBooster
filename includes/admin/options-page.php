@@ -44,6 +44,7 @@ add_action('admin_init', function() {
     register_setting($option_group, 'bbooster_ztext_enabled', 'intval');
     register_setting($option_group, 'bbooster_splitting_enabled', 'intval');
     register_setting($option_group, 'bbooster_textillate_enabled', 'intval');
+    register_setting($option_group, 'bbooster_baffle_enabled', 'intval');
     
     // Register BUILDER TWEAKS settings from features array
     $features = [
@@ -63,6 +64,7 @@ add_action('admin_init', function() {
         'ztext' => 'Ztext.js 3D Text',
         'splitting' => 'Splitting.js Text & Image Animation',
         'textillate' => 'Textillate.js Text Animation',
+        'baffle' => 'Baffle.js Text Obfuscation',
     ];
     
     foreach ($features as $feature_key => $feature_name) {
