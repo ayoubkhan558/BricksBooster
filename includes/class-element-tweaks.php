@@ -14,10 +14,10 @@ class BricksBooster_Element_Tweaks {
                 'file'  => 'animation-tweak.php',
                 'class' => 'BricksBooster_Element_Tweaks_1',
             ],
-            // 'animation-tweak-2' => [
-            //     'file'  => 'animation-tweak-2.php',
-            //     'class' => 'BricksBooster_Element_Tweaks_2',
-            // ],
+            'animation-tweak-2' => [
+                'file'  => 'animation-tweak-2.php',
+                'class' => 'BricksBooster_Element_Tweaks_2',
+            ],
             // 'animation-tweak-3' => [
             //     'file'  => 'animation-tweak-3.php',
             //     'class' => 'BricksBooster_Element_Tweaks_3',
