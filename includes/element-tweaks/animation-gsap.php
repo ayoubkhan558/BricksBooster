@@ -116,7 +116,6 @@ class BricksBooster_Element_Tweaks_15 {
         $control_groups['bricksbooster_gsap'] = [
             'tab'   => 'style',
             'title' => esc_html__('GSAP Animations', 'bricks-booster'),
-            'icon'  => 'ti-layout-media-overlay-alt-2'
         ];
 
         return $control_groups;

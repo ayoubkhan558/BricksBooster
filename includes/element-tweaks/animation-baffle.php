@@ -190,7 +190,6 @@ class BricksBooster_Element_Tweaks_14 {
         $control_groups['bricksbooster_baffle'] = [
             'tab'   => 'style',
             'title' => esc_html__('Baffle.js', 'bricks-booster'),
-            'icon'  => 'ti-layout-media-overlay-alt-2'
         ];
 
         return $control_groups;

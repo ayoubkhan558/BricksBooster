@@ -149,7 +149,6 @@ class BricksBooster_Element_Tweaks_13 {
         $control_groups['bricksbooster_textillate'] = [
             'tab'   => 'style',
             'title' => esc_html__('Textillate.js', 'bricks-booster'),
-            'icon'  => 'ti-text'
         ];
 
         return $control_groups;

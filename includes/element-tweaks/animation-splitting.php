@@ -168,7 +168,6 @@ class BricksBooster_Element_Tweaks_12 {
         $control_groups['bricksbooster_splitting'] = [
             'tab'   => 'style',
             'title' => esc_html__('Splitting.js', 'bricks-booster'),
-            'icon'  => 'ti-split-h'
         ];
 
         return $control_groups;

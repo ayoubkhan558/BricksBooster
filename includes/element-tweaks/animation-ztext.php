@@ -148,7 +148,6 @@ class BricksBooster_Element_Tweaks_11 {
         $control_groups['bricksbooster_ztext'] = [
             'tab'   => 'style',
             'title' => esc_html__('Ztext.js', 'bricks-booster'),
-            'icon'  => 'ti-text'
         ];
 
         return $control_groups;
