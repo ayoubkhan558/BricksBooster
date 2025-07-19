@@ -39,6 +39,7 @@ add_action('admin_init', function() {
     register_setting($option_group, 'bbooster_sal_enabled', 'intval');
     register_setting($option_group, 'bbooster_rellax_enabled', 'intval');
     register_setting($option_group, 'bbooster_locomotive_enabled', 'intval');
+    register_setting($option_group, 'bbooster_atropos_enabled', 'intval');
     
     // Register BUILDER TWEAKS settings from features array
     $features = [
@@ -53,6 +54,7 @@ add_action('admin_init', function() {
         'sal' => 'SAL.js Animations',
         'rellax' => 'Rellax.js Animations',
         'locomotive' => 'Locomotive Scroll',
+        'atropos' => 'Atropos.js 3D Hover',
     ];
     
     foreach ($features as $feature_key => $feature_name) {

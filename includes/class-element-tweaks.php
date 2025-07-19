@@ -42,6 +42,10 @@ class BricksBooster_Element_Tweaks {
                 'file'  => 'animation-locomotive.php',
                 'class' => 'BricksBooster_Element_Tweaks_8',
             ],
+            'atropos' => [
+                'file'  => 'animation-atropos.php',
+                'class' => 'BricksBooster_Element_Tweaks_9',
+            ],
             // 'animation-tweak-3' => [
             //     'file'  => 'animation-tweak-3.php',
             //     'class' => 'BricksBooster_Element_Tweaks_3',

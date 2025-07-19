@@ -14,6 +14,7 @@ class BricksBooster_Element_Tweaks_Tab {
             'sal' => 'SAL.js Animations',
             'rellax' => 'Rellax.js Animations',
             'locomotive' => 'Locomotive Scroll',
+            'atropos' => 'Atropos.js 3D Hover',
             // Add more tweaks here as needed
         ];
         ?>
