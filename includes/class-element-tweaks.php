@@ -38,6 +38,10 @@ class BricksBooster_Element_Tweaks {
                 'file'  => 'animation-rellax.php',
                 'class' => 'BricksBooster_Element_Tweaks_7',
             ],
+            'locomotive' => [
+                'file'  => 'animation-locomotive.php',
+                'class' => 'BricksBooster_Element_Tweaks_8',
+            ],
             // 'animation-tweak-3' => [
             //     'file'  => 'animation-tweak-3.php',
             //     'class' => 'BricksBooster_Element_Tweaks_3',
