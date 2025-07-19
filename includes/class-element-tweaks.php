@@ -18,9 +18,13 @@ class BricksBooster_Element_Tweaks {
                 'file'  => 'animation-aos-tweak.php',
                 'class' => 'BricksBooster_Element_Tweaks_2',
             ],
-            'laxjs_animation' => [
+            'lax' => [
                 'file'  => 'animation-laxjs.php',
                 'class' => 'BricksBooster_Element_Tweaks_3',
+            ],
+            'scrollreveal' => [
+                'file'  => 'animation-scrollreveal.php',
+                'class' => 'BricksBooster_Element_Tweaks_4',
             ],
             // 'animation-tweak-3' => [
             //     'file'  => 'animation-tweak-3.php',

@@ -8,7 +8,8 @@ class BricksBooster_Element_Tweaks_Tab {
         $tweaks = [
             'animation_tweak' => 'Animation Tweak',
             'animation_aos_tweak' => 'AOS Animations',
-            'animation_tweak_3' => 'Animation Tweak 3',
+            'lax' => 'Lax.js Animations',
+            'scrollreveal' => 'ScrollReveal Animations',
             // Add more tweaks here as needed
         ];
         ?>
