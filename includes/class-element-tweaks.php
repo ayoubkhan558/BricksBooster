@@ -26,6 +26,14 @@ class BricksBooster_Element_Tweaks {
                 'file'  => 'animation-scrollreveal.php',
                 'class' => 'BricksBooster_Element_Tweaks_4',
             ],
+            'scrollout' => [
+                'file'  => 'animation-scrollout.php',
+                'class' => 'BricksBooster_Element_Tweaks_5',
+            ],
+            'sal' => [
+                'file'  => 'animation-sal.php',
+                'class' => 'BricksBooster_Element_Tweaks_6',
+            ],
             // 'animation-tweak-3' => [
             //     'file'  => 'animation-tweak-3.php',
             //     'class' => 'BricksBooster_Element_Tweaks_3',

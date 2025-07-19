@@ -35,6 +35,8 @@ add_action('admin_init', function() {
     register_setting($option_group, 'bbooster_animation_aos_tweak_enabled', 'intval');
     register_setting($option_group, 'bbooster_laxjs_animation_enabled', 'intval');
     register_setting($option_group, 'bbooster_scrollreveal_animation_enabled', 'intval');
+    register_setting($option_group, 'bbooster_scrollout_enabled', 'intval');
+    register_setting($option_group, 'bbooster_sal_enabled', 'intval');
     
     // Register BUILDER TWEAKS settings from features array
     $features = [
@@ -45,6 +47,8 @@ add_action('admin_init', function() {
         'animation_aos_tweak' => 'AOS Animations',
         'laxjs_animation' => 'Lax.js Animations',
         'scrollreveal_animation' => 'ScrollReveal Animations',
+        'scrollout' => 'ScrollOut Animations',
+        'sal' => 'SAL.js Animations',
     ];
     
     foreach ($features as $feature_key => $feature_name) {

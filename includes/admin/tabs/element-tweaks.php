@@ -10,6 +10,8 @@ class BricksBooster_Element_Tweaks_Tab {
             'animation_aos_tweak' => 'AOS Animations',
             'lax' => 'Lax.js Animations',
             'scrollreveal' => 'ScrollReveal Animations',
+            'scrollout' => 'ScrollOut Animations',
+            'sal' => 'SAL.js Animations',
             // Add more tweaks here as needed
         ];
         ?>
