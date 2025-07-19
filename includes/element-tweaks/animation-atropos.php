@@ -18,21 +18,34 @@ class BricksBooster_Element_Tweaks_9 {
      * Enqueue Atropos.js assets
      */
     public function enqueue_atropos_assets() {
-        // Atropos from CDN
-        wp_enqueue_style(
-            'atropos-css',
-            'https://cdn.jsdelivr.net/npm/atropos@1.0.2/atropos.min.css',
-            [],
-            '1.0.2'
-        );
+        // Check if WordPress functions are available
+        if (!function_exists('wp_enqueue_style') || !function_exists('wp_enqueue_script')) {
+            return;
+        }
         
-        wp_enqueue_script(
-            'atropos-js',
-            'https://cdn.jsdelivr.net/npm/atropos@1.0.2/atropos.min.js',
-            [],
-            '1.0.2',
-            true
-        );
+        // Track enqueued assets to prevent duplicates
+        static $enqueued = false;
+        
+        if (!$enqueued) {
+            // Enqueue Atropos CSS
+            wp_enqueue_style(
+                'atropos-css',
+                'https://cdn.jsdelivr.net/npm/atropos@2.0.2/atropos.min.css',
+                [],
+                '2.0.2'
+            );
+            
+            // Enqueue Atropos JS
+            wp_enqueue_script(
+                'atropos-js',
+                'https://cdn.jsdelivr.net/npm/atropos@2.0.2/atropos.min.js',
+                [],
+                '2.0.2',
+                true
+            );
+            
+            $enqueued = true;
+        }
     }
 
     /**
@@ -46,19 +59,25 @@ class BricksBooster_Element_Tweaks_9 {
         <script>
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof Atropos !== 'undefined') {
+                // Initialize global instances object
+                window.atroposInstances = window.atroposInstances || {};
+                
                 <?php foreach ($this->atropos_instances as $id => $config): ?>
                 (function() {
-                    var el = document.getElementById('atropos-<?php echo esc_js($id); ?>');
+                    var el = document.getElementById('<?php echo esc_js($id); ?>');
                     if (el) {
-                        var config = <?php echo wp_json_encode($config); ?>;
+                        var config = <?php echo wp_json_encode($config, JSON_HEX_QUOT | JSON_HEX_APOS); ?>;
                         
                         // Convert string values to numbers where appropriate
-                        var numericProps = ['rotateXMax', 'rotateYMax', 'rotateXMin', 'rotateYMin', 'rotateXInvert', 'rotateYInvert', 
-                                          'shadowScale', 'shadowOffsetX', 'shadowOffsetY', 'duration', 'rotateTouch'];
+                        var numericProps = ['rotateXMax', 'rotateYMax', 'rotateXMin', 'rotateYMin', 
+                                          'shadowScale', 'shadowOffsetX', 'shadowOffsetY', 'duration'];
                         
                         numericProps.forEach(function(prop) {
-                            if (config[prop] !== undefined) {
-                                config[prop] = parseFloat(config[prop]);
+                            if (config[prop] !== undefined && config[prop] !== null) {
+                                var numValue = parseFloat(config[prop]);
+                                if (!isNaN(numValue)) {
+                                    config[prop] = numValue;
+                                }
                             }
                         });
                         
@@ -66,31 +85,42 @@ class BricksBooster_Element_Tweaks_9 {
                         var booleanProps = ['activeOffset', 'shadow', 'highlight', 'rotateTouch', 'rotateLock'];
                         booleanProps.forEach(function(prop) {
                             if (config[prop] !== undefined) {
-                                config[prop] = config[prop] === 'true' || config[prop] === true;
+                                if (typeof config[prop] === 'string') {
+                                    config[prop] = config[prop] === 'true';
+                                }
                             }
                         });
                         
-                        // Initialize Atropos instance
-                        window.atroposInstances = window.atroposInstances || {};
-                        window.atroposInstances['<?php echo esc_js($id); ?>'] = new Atropos(el, config);
+                        // Initialize Atropos instance with error handling
+                        try {
+                            window.atroposInstances['<?php echo esc_js($id); ?>'] = new Atropos(el, config);
+                        } catch (error) {
+                            console.warn('Failed to initialize Atropos for element:', '<?php echo esc_js($id); ?>', error);
+                        }
                     }
                 })();
                 <?php endforeach; ?>
                 
-                // Handle window resize
+                // Handle window resize with debouncing
                 var resizeTimer;
                 window.addEventListener('resize', function() {
                     clearTimeout(resizeTimer);
                     resizeTimer = setTimeout(function() {
                         if (window.atroposInstances) {
                             Object.values(window.atroposInstances).forEach(function(instance) {
-                                if (instance && typeof instance.update === 'function') {
-                                    instance.update();
+                                if (instance && typeof instance.refresh === 'function') {
+                                    try {
+                                        instance.refresh();
+                                    } catch (error) {
+                                        console.warn('Failed to refresh Atropos instance:', error);
+                                    }
                                 }
                             });
                         }
                     }, 250);
                 });
+            } else {
+                console.warn('Atropos library not loaded');
             }
         });
         </script>
@@ -104,16 +134,22 @@ class BricksBooster_Element_Tweaks_9 {
         ?>
         <script>
         (function($) {
-            $(document).on('bricks/ajax/after_load', function() {
-                if (typeof Atropos !== 'undefined' && window.atroposInstances) {
-                    Object.values(window.atroposInstances).forEach(function(instance) {
-                        if (instance && typeof instance.update === 'function') {
-                            instance.update();
-                        }
-                    });
-                }
-            });
-        })(jQuery);
+            if (typeof $ !== 'undefined') {
+                $(document).on('bricks/ajax/after_load', function() {
+                    if (typeof Atropos !== 'undefined' && window.atroposInstances) {
+                        Object.values(window.atroposInstances).forEach(function(instance) {
+                            if (instance && typeof instance.refresh === 'function') {
+                                try {
+                                    instance.refresh();
+                                } catch (error) {
+                                    console.warn('Failed to refresh Atropos instance after AJAX:', error);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        })(window.jQuery);
         </script>
         <?php
     }
@@ -127,13 +163,20 @@ class BricksBooster_Element_Tweaks_9 {
         }
 
         // Get all registered elements
-        $elements = \Bricks\Elements::$elements;
+        $elements = \Bricks\Elements::$elements ?? [];
+        
+        if (empty($elements)) {
+            return;
+        }
+
         $names = array_keys($elements);
 
         // Add control groups and controls to all elements
         foreach ($names as $name) {
-            add_filter("bricks/elements/{$name}/control_groups", [$this, 'add_control_group'], 10);
-            add_filter("bricks/elements/{$name}/controls", [$this, 'add_controls'], 10);
+            if (!empty($name)) {
+                add_filter("bricks/elements/{$name}/control_groups", [$this, 'add_control_group'], 10);
+                add_filter("bricks/elements/{$name}/controls", [$this, 'add_controls'], 10);
+            }
         }
     }
 
@@ -141,6 +184,10 @@ class BricksBooster_Element_Tweaks_9 {
      * Add Atropos control group
      */
     public function add_control_group($control_groups) {
+        if (!is_array($control_groups)) {
+            $control_groups = [];
+        }
+
         $control_groups['bricksbooster_atropos'] = [
             'tab'   => 'style',
             'title' => esc_html__('Atropos.js', 'bricks-booster'),
@@ -154,6 +201,10 @@ class BricksBooster_Element_Tweaks_9 {
      * Add Atropos controls
      */
     public function add_controls($controls) {
+        if (!is_array($controls)) {
+            $controls = [];
+        }
+
         // Enable Atropos
         $controls['_atropos_enable'] = [
             'tab'   => 'style',
@@ -307,6 +358,11 @@ class BricksBooster_Element_Tweaks_9 {
      * Render the animation in the frontend
      */
     public function render_animation($html, $element) {
+        // Validate inputs
+        if (empty($html) || !is_object($element) || !property_exists($element, 'settings')) {
+            return $html;
+        }
+
         $settings = $element->settings;
         
         // Check if Atropos is enabled
@@ -318,17 +374,17 @@ class BricksBooster_Element_Tweaks_9 {
         self::$instance_count++;
         $instance_id = 'atropos-' . self::$instance_count . '-' . uniqid();
 
-        // Get animation settings
+        // Get animation settings with proper sanitization
         $config = [
-            'activeOffset' => $settings['_atropos_active_offset'] ?? 'true',
-            'shadow' => $settings['_atropos_shadow'] ?? 'true',
-            'highlight' => $settings['_atropos_highlight'] ?? 'true',
-            'rotateXMax' => $settings['_atropos_rotate_x_max'] ?? 10,
-            'rotateYMax' => $settings['_atropos_rotate_y_max'] ?? 10,
-            'shadowScale' => $settings['_atropos_shadow_scale'] ?? 1.2,
-            'duration' => $settings['_atropos_duration'] ?? 300,
-            'rotateTouch' => $settings['_atropos_rotate_touch'] ?? 'true',
-            'rotateLock' => $settings['_atropos_rotate_lock'] ?? 'false',
+            'activeOffset' => sanitize_text_field($settings['_atropos_active_offset'] ?? 'true'),
+            'shadow' => sanitize_text_field($settings['_atropos_shadow'] ?? 'true'),
+            'highlight' => sanitize_text_field($settings['_atropos_highlight'] ?? 'true'),
+            'rotateXMax' => floatval($settings['_atropos_rotate_x_max'] ?? 10),
+            'rotateYMax' => floatval($settings['_atropos_rotate_y_max'] ?? 10),
+            'shadowScale' => floatval($settings['_atropos_shadow_scale'] ?? 1.2),
+            'duration' => intval($settings['_atropos_duration'] ?? 300),
+            'rotateTouch' => sanitize_text_field($settings['_atropos_rotate_touch'] ?? 'true'),
+            'rotateLock' => sanitize_text_field($settings['_atropos_rotate_lock'] ?? 'false'),
         ];
 
         // Store instance config for initialization
