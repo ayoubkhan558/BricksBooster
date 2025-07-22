@@ -21,6 +21,8 @@ class BricksBooster_Element_Tweaks_Tab {
             'textillate' => 'Textillate.js Text Animation',
             'baffle' => 'Baffle.js Text Obfuscation',
             'gsap' => 'GSAP Animations',
+            'vivus' => 'Vivus.js SVG Animations',
+            'ripplet' => 'Ripplet.js Click Effects',
             // Add more tweaks here as needed
         ];
         ?>

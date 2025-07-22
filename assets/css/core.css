@@ -1,12 +1,10 @@
 /* BricksBooster Core Styles */
 :root {
+    --bricksbooster-primary: #4bee9c;
     --bricksbooster-primary: #4a6cf7;
     --bricksbooster-text: #333;
     --bricksbooster-border: #e0e0e0;
 
-    --builder-bg-1: #1a1a1a;
-    --builder-bg-2: #1a1a1a;
-    --builder-bg-3: #1a1a1a;
 }
 
 
@@ -14,9 +12,9 @@
 #bricks-panel-elements li[data-element-name*="bricksbooster_"]:after,
 #bricks-structure .structure-item>.title .bricksbooster-element:after,
 [data-control-group^='bricksbooster_'] .control-group-title:after {
-    background: var(--builder-bg-2);
+    background: var(--bricksbooster-primary);
     border-bottom-right-radius: 4px;
-    color: var(--builder-color);
+    color: var(--bricksbooster-text);
     content: "Booster";
     display: -webkit-box;
     display: -ms-flexbox;
@@ -45,7 +43,7 @@
 #bricks-panel-elements li[data-element-name*="bricksbooster_"]:hover:after,
 #bricks-structure .element.active>.structure-item>.title .bricksbooster-element:after,
 #bricks-structure .structure-item:hover>.title .bricksbooster-element:after {
-    background: var(--builder-bg-2);
+    background: var(--bricksbooster-primary);
 }
 
 #bricks-structure .structure-item>.title .bricksbooster-element:after,

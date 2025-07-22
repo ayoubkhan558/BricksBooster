@@ -1,0 +1,73 @@
+/* Ripple Effect Styles */
+.bricks-booster-ripplet {
+    position: relative;
+    overflow: hidden;
+    transform: translate3d(0, 0, 0);
+    --ripplet-color: rgba(255, 255, 255, 0.5);
+    --ripplet-opacity: 0.5;
+    
+    /* Ensure proper stacking context */
+    z-index: 0;
+}
+
+/* Ripple element styles */
+.bricks-booster-ripplet .ripplet {
+    position: absolute;
+    border-radius: 50%;
+    background-color: var(--ripplet-color, rgba(255, 255, 255, 0.5));
+    opacity: var(--ripplet-opacity, 0.5);
+    transform: scale(0);
+    pointer-events: none;
+    z-index: -1;
+    will-change: transform, opacity;
+}
+
+/* Animation for the ripple effect */
+@keyframes ripplet-animation {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Apply animation to the ripple */
+.bricks-booster-ripplet .ripplet.animate {
+    animation: ripplet-animation 0.5s linear forwards;
+}
+
+/* Ensure buttons and other interactive elements work well with the ripple */
+.bricks-booster-ripplet.brx-button,
+.bricks-booster-ripplet.brx-button *,
+.bricks-booster-ripplet.bricks-button,
+.bricks-booster-ripplet.bricks-button * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Improve touch feedback on mobile devices */
+@media (hover: none) {
+    .bricks-booster-ripplet {
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Fix for elements with border-radius */
+.bricks-booster-ripplet[style*="border-radius"] {
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: -webkit-radial-gradient(white, black);
+}
+
+/* Fix for images and other replaced elements */
+.bricks-booster-ripplet img,
+.bricks-booster-ripplet svg,
+.bricks-booster-ripplet video,
+.bricks-booster-ripplet iframe {
+    position: relative;
+    z-index: 1;
+}
+
+/* Disable ripple effect when button is disabled */
+.bricks-booster-ripplet:disabled,
+.bricks-booster-ripplet.disabled {
+    pointer-events: none;
+}

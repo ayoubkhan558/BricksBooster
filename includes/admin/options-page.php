@@ -46,6 +46,8 @@ add_action('admin_init', function() {
     register_setting($option_group, 'bbooster_textillate_enabled', 'intval');
     register_setting($option_group, 'bbooster_baffle_enabled', 'intval');
     register_setting($option_group, 'bbooster_gsap_enabled', 'intval');
+    register_setting($option_group, 'bbooster_vivus_enabled', 'intval');
+    register_setting($option_group, 'bbooster_ripplet_enabled', 'intval');
     
     // Register BUILDER TWEAKS settings from features array
     $features = [
@@ -67,6 +69,8 @@ add_action('admin_init', function() {
         'textillate' => 'Textillate.js Text Animation',
         'baffle' => 'Baffle.js Text Obfuscation',
         'gsap' => 'GSAP Animations',
+        'vivus' => 'Vivus.js SVG Animations',
+        'ripplet' => 'Ripplet.js Click Effects',
     ];
     
     foreach ($features as $feature_key => $feature_name) {
