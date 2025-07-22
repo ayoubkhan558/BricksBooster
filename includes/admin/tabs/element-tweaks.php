@@ -23,6 +23,7 @@ class BricksBooster_Element_Tweaks_Tab {
             'gsap' => 'GSAP Animations',
             'vivus' => 'Vivus.js SVG Animations',
             'ripplet' => 'Ripplet.js Click Effects',
+            'canvas_nest' => 'Canvas Nest Background',
             // Add more tweaks here as needed
         ];
         ?>
