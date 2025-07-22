@@ -24,6 +24,10 @@ class BricksBooster_Elements_Tab {
                         'label' => 'Simple List',
                         'tooltip' => 'Enable simple list element'
                     ],
+                    'particles' => [
+                        'label' => 'Particles Background',
+                        'tooltip' => 'Enable interactive particles background element'
+                    ],
                 ];
 
                 foreach ($elements as $key => $element) {

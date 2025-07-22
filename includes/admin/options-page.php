@@ -48,6 +48,7 @@ add_action('admin_init', function() {
     register_setting($option_group, 'bbooster_gsap_enabled', 'intval');
     register_setting($option_group, 'bbooster_vivus_enabled', 'intval');
     register_setting($option_group, 'bbooster_ripplet_enabled', 'intval');
+    register_setting($option_group, 'bricksbooster_particles_enabled', 'intval');
     
     // Register BUILDER TWEAKS settings from features array
     $features = [

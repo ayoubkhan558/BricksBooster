@@ -52,6 +52,10 @@ class BricksBooster {
                 'file' => 'class-elements.php',
                 'class' => 'BricksBooster_Elements'
             ],
+            'elements' => [
+                'file' => 'class-elements.php',
+                'class' => 'BricksBooster_Elements'
+            ],
             'dynamic_tags' => [
                 'file' => 'class-dynamic-tags.php',
                 'class' => 'BricksBooster_Dynamic_Tags'
@@ -79,6 +83,7 @@ class BricksBooster {
     }
 
     public function enqueue_assets() {
+        // Always enqueue core assets in builder
         if (bricks_is_builder()) {
             // Core assets
             wp_enqueue_style(
@@ -95,7 +100,46 @@ class BricksBooster {
                 BRICKSBOOSTER_VERSION,
                 true
             );
-        } 
+        }
+        
+        // Enqueue particles assets if enabled and in frontend or builder
+        if (get_option('bricksbooster_particles_enabled', 1)) {
+            // Particles.js library
+            wp_register_script(
+                'particles-js',
+                'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js',
+                [],
+                '2.0.0',
+                true
+            );
+            
+            // Our custom particles script
+            wp_enqueue_script(
+                'bricksbooster-particles',
+                BRICKSBOOSTER_URL . 'assets/js/particles.js',
+                ['jquery', 'particles-js'],
+                BRICKSBOOSTER_VERSION,
+                true
+            );
+            
+            // Particles CSS
+            wp_enqueue_style(
+                'bricksbooster-particles',
+                BRICKSBOOSTER_URL . 'assets/css/particles.css',
+                [],
+                BRICKSBOOSTER_VERSION
+            );
+            
+            // Localize script with plugin URL for AJAX
+            wp_localize_script(
+                'bricksbooster-particles',
+                'bricksBoosterParticles',
+                [
+                    'ajaxurl' => admin_url('admin-ajax.php'),
+                    'nonce' => wp_create_nonce('bricksbooster-particles-nonce')
+                ]
+            );
+        }
     }
 }
 

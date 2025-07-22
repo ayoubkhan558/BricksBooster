@@ -25,7 +25,10 @@ class BricksBooster_Elements {
                 'nestable_list' => [
                     'file' => 'nestable-list.php'
                 ],
-                // Add more elements here as needed
+                'particles' => [
+                    'file' => 'particles.php',
+                    'class' => 'BricksBooster_Particles_Element'
+                ]
             ];
             // Register elements that are enabled in settings
             foreach ($elements as $key => $element) {
@@ -33,7 +36,14 @@ class BricksBooster_Elements {
                     $file_path = BRICKSBOOSTER_DIR . 'includes/elements/' . $element['file'];
                     if (file_exists($file_path)) {
                         require_once $file_path;
-                        \Bricks\Elements::register_element($file_path);
+                        
+                        // If element has a custom class, register it directly
+                        if (!empty($element['class']) && class_exists($element['class'])) {
+                            \Bricks\Elements::register_element(new $element['class']());
+                        } else {
+                            // Fallback to file-based registration
+                            \Bricks\Elements::register_element($file_path);
+                        }
                     }
                 }
             }

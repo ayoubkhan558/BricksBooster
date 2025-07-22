@@ -1,0 +1,86 @@
+/* Particles Container */
+.bricks-particles-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    overflow: hidden;
+}
+
+/* Particles Canvas */
+.bricks-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* Content Wrapper */
+.bricks-particles-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    color: #ffffff;
+    text-align: center;
+}
+
+/* Title Styling */
+.bricks-particles-title {
+    margin: 0 0 1rem 0;
+    color: inherit;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Ensure proper stacking context for content */
+.bricks-particles-content > * {
+    position: relative;
+    z-index: 3;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767px) {
+    .bricks-particles-container {
+        min-height: 250px;
+    }
+    
+    .bricks-particles-title {
+        font-size: 2rem;
+    }
+}
+
+/* Fix for full-width sections */
+.brxe-section .bricks-particles-container {
+    margin-left: calc(-1 * var(--bricks-container-margin));
+    margin-right: calc(-1 * var(--bricks-container-margin));
+    width: calc(100% + (2 * var(--bricks-container-margin)));
+}
+
+/* Ensure proper z-index for nested elements */
+.bricks-particles-container * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Hide particles canvas in the editor to improve performance */
+body.brx-dragging .bricks-particles,
+body.brx-dragging .bricks-particles-container {
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+/* Performance optimization for mobile devices */
+@media (max-width: 1024px) {
+    .bricks-particles-container {
+        /* Reduce particle count on mobile by default */
+        --particles-count: 40;
+    }
+}
