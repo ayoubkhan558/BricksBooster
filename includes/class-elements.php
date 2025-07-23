@@ -25,10 +25,6 @@ class BricksBooster_Elements {
                 'nestable_list' => [
                     'file' => 'nestable-list.php'
                 ],
-                'particles' => [
-                    'file' => 'particles.php',
-                    'class' => 'BricksBooster_Particles_Element'
-                ]
             ];
             // Register elements that are enabled in settings
             foreach ($elements as $key => $element) {

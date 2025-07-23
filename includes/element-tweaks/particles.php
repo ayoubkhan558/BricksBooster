@@ -1,5 +1,5 @@
 <?php
-class BricksBooster_Particles_Element extends \Bricks\Element {
+class BricksBooster_Particles_Element {
     // Element properties
     public $category = 'BricksBooster';
     public $name = 'bricksbooster-particles';
@@ -35,18 +35,18 @@ class BricksBooster_Particles_Element extends \Bricks\Element {
             'type' => 'separator',
         ];
 
-        // Particle Type
-        $this->controls['_particles_type'] = [
+        // Particle Type (removed duplicate control)
+        $this->controls['_particles_shape_type'] = [
             'tab' => 'style',
-            'label' => esc_html__('Particle Type', 'bricks-booster'),
+            'label' => esc_html__('Shape Type', 'bricks-booster'),
             'type' => 'select',
             'options' => [
-                'circle' => esc_html__('Circles', 'bricks-booster'),
-                'triangle' => esc_html__('Triangles', 'bricks-booster'),
-                'polygon' => esc_html__('Polygons', 'bricks-booster'),
-                'star' => esc_html__('Stars', 'bricks-booster'),
-                'edge' => esc_html__('Edges', 'bricks-booster'),
-                'image' => esc_html__('Images', 'bricks-booster'),
+                'circle' => esc_html__('Circle', 'bricks-booster'),
+                'square' => esc_html__('Square', 'bricks-booster'),
+                'triangle' => esc_html__('Triangle', 'bricks-booster'),
+                'polygon' => esc_html__('Polygon', 'bricks-booster'),
+                'star' => esc_html__('Star', 'bricks-booster'),
+                'image' => esc_html__('Image', 'bricks-booster'),
             ],
             'default' => 'circle',
         ];
@@ -100,6 +100,7 @@ class BricksBooster_Particles_Element extends \Bricks\Element {
                 [
                     'selector' => '',
                     'property' => '--particle-size',
+                    'value' => '%spx', // Add unit
                 ],
             ],
         ];
@@ -118,7 +119,7 @@ class BricksBooster_Particles_Element extends \Bricks\Element {
             'label' => esc_html__('Connection Line Color', 'bricks-booster'),
             'type' => 'color',
             'default' => '#ffffff',
-            'required' => ['_particles_line_linked', '!=', ''],
+            'required' => ['_particles_line_linked', '=', true], // Fixed condition
             'css' => [
                 [
                     'selector' => '',
@@ -136,11 +137,12 @@ class BricksBooster_Particles_Element extends \Bricks\Element {
             'max' => 5,
             'step' => 0.1,
             'default' => 1,
-            'required' => ['_particles_line_linked', '!=', ''],
+            'required' => ['_particles_line_linked', '=', true], // Fixed condition
             'css' => [
                 [
                     'selector' => '',
                     'property' => '--line-width',
+                    'value' => '%spx', // Add unit
                 ],
             ],
         ];
@@ -175,22 +177,6 @@ class BricksBooster_Particles_Element extends \Bricks\Element {
             'default' => 'none',
         ];
 
-        // Shape Type
-        $this->controls['_particles_shape_type'] = [
-            'tab' => 'style',
-            'label' => esc_html__('Shape Type', 'bricks-booster'),
-            'type' => 'select',
-            'options' => [
-                'circle' => esc_html__('Circle', 'bricks-booster'),
-                'square' => esc_html__('Square', 'bricks-booster'),
-                'triangle' => esc_html__('Triangle', 'bricks-booster'),
-                'polygon' => esc_html__('Polygon', 'bricks-booster'),
-                'star' => esc_html__('Star', 'bricks-booster'),
-                'image' => esc_html__('Image', 'bricks-booster'),
-            ],
-            'default' => 'circle',
-        ];
-
         // Image URL
         $this->controls['_particles_image'] = [
             'tab' => 'style',
@@ -219,7 +205,7 @@ class BricksBooster_Particles_Element extends \Bricks\Element {
                 'none' => esc_html__('None', 'bricks-booster'),
             ],
             'default' => 'grab',
-            'required' => ['_particles_interactivity', '!=', ''],
+            'required' => ['_particles_interactivity', '=', true], // Fixed condition
         ];
 
         // Click Effect
@@ -234,12 +220,18 @@ class BricksBooster_Particles_Element extends \Bricks\Element {
                 'none' => esc_html__('None', 'bricks-booster'),
             ],
             'default' => 'push',
-            'required' => ['_particles_interactivity', '!=', ''],
+            'required' => ['_particles_interactivity', '=', true], // Fixed condition
         ];
     }
 
     // Enqueue scripts and styles
     public function enqueue_scripts() {
+        // Check if constants are defined
+        if (!defined('BRICKSBOOSTER_PLUGIN_URL') || !defined('BRICKSBOOSTER_VERSION')) {
+            error_log('BricksBooster constants not defined');
+            return;
+        }
+
         wp_enqueue_script(
             'particles-js',
             'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js',
@@ -272,14 +264,28 @@ class BricksBooster_Particles_Element extends \Bricks\Element {
         // Default attributes
         $this->set_attribute('_root', 'id', $id);
         $this->set_attribute('_root', 'class', 'bricks-particles-container');
-        $this->set_attribute('_root', 'data-particles-config', wp_json_encode($this->get_particles_config()));
+        
+        // Safely encode JSON
+        $particles_config = $this->get_particles_config();
+        if ($particles_config) {
+            $this->set_attribute('_root', 'data-particles-config', wp_json_encode($particles_config));
+        }
 
         // Add title if set
-        $title = !empty($settings['_title']) ? '<h3 class="bricks-particles-title">' . esc_html($settings['_title']) . '</h3>' : '';
+        $title = '';
+        if (!empty($settings['_title'])) {
+            $title = '<h3 class="bricks-particles-title">' . esc_html($settings['_title']) . '</h3>';
+        }
+
+        // Render children safely
+        $children_content = '';
+        if (!empty($this->children)) {
+            $children_content = $this->render_children($this->children);
+        }
 
         echo "<div {$this->render_attributes('_root')}>";
         echo '<div id="' . esc_attr($id) . '-particles" class="bricks-particles"></div>';
-        echo '<div class="bricks-particles-content">' . $title . $this->render_children($this->children) . '</div>';
+        echo '<div class="bricks-particles-content">' . $title . $children_content . '</div>';
         echo '</div>';
     }
 
@@ -290,14 +296,14 @@ class BricksBooster_Particles_Element extends \Bricks\Element {
         $config = [
             'particles' => [
                 'number' => [
-                    'value' => !empty($settings['_particles_count']) ? intval($settings['_particles_count']) : 80,
+                    'value' => isset($settings['_particles_count']) ? intval($settings['_particles_count']) : 80,
                     'density' => [
                         'enable' => true,
                         'value_area' => 800,
                     ],
                 ],
                 'color' => [
-                    'value' => !empty($settings['_particles_color']) ? $settings['_particles_color'] : '#ffffff',
+                    'value' => isset($settings['_particles_color']) ? $settings['_particles_color'] : '#ffffff',
                 ],
                 'shape' => [
                     'type' => $this->get_particle_shape(),
@@ -320,7 +326,7 @@ class BricksBooster_Particles_Element extends \Bricks\Element {
                     ],
                 ],
                 'size' => [
-                    'value' => !empty($settings['_particles_size']) ? intval($settings['_particles_size']) : 3,
+                    'value' => isset($settings['_particles_size']) ? intval($settings['_particles_size']) : 3,
                     'random' => true,
                     'anim' => [
                         'enable' => true,
@@ -332,13 +338,13 @@ class BricksBooster_Particles_Element extends \Bricks\Element {
                 'line_linked' => [
                     'enable' => !empty($settings['_particles_line_linked']),
                     'distance' => 150,
-                    'color' => !empty($settings['_particles_line_color']) ? $settings['_particles_line_color'] : '#ffffff',
+                    'color' => isset($settings['_particles_line_color']) ? $settings['_particles_line_color'] : '#ffffff',
                     'opacity' => 0.4,
-                    'width' => !empty($settings['_particles_line_width']) ? floatval($settings['_particles_line_width']) : 1,
+                    'width' => isset($settings['_particles_line_width']) ? floatval($settings['_particles_line_width']) : 1,
                 ],
                 'move' => [
                     'enable' => true,
-                    'speed' => !empty($settings['_particles_move_speed']) ? floatval($settings['_particles_move_speed']) : 2,
+                    'speed' => isset($settings['_particles_move_speed']) ? floatval($settings['_particles_move_speed']) : 2,
                     'direction' => $this->get_particle_direction(),
                     'random' => $this->get_particle_direction() === 'none',
                     'straight' => false,
@@ -356,11 +362,11 @@ class BricksBooster_Particles_Element extends \Bricks\Element {
                 'events' => [
                     'onhover' => [
                         'enable' => !empty($settings['_particles_interactivity']),
-                        'mode' => !empty($settings['_particles_hover_effect']) ? $settings['_particles_hover_effect'] : 'grab',
+                        'mode' => isset($settings['_particles_hover_effect']) ? $settings['_particles_hover_effect'] : 'grab',
                     ],
                     'onclick' => [
                         'enable' => !empty($settings['_particles_interactivity']),
-                        'mode' => !empty($settings['_particles_click_effect']) ? $settings['_particles_click_effect'] : 'push',
+                        'mode' => isset($settings['_particles_click_effect']) ? $settings['_particles_click_effect'] : 'push',
                     ],
                     'resize' => true,
                 ],
@@ -394,7 +400,10 @@ class BricksBooster_Particles_Element extends \Bricks\Element {
         ];
 
         // Add image if shape type is image and image is set
-        if (!empty($settings['_particles_shape_type']) && $settings['_particles_shape_type'] === 'image' && !empty($settings['_particles_image']['url'])) {
+        if (isset($settings['_particles_shape_type']) && 
+            $settings['_particles_shape_type'] === 'image' && 
+            !empty($settings['_particles_image']['url'])) {
+            
             $config['particles']['shape']['type'] = 'image';
             $config['particles']['shape']['image'] = [
                 'src' => $settings['_particles_image']['url'],
@@ -436,6 +445,7 @@ class BricksBooster_Particles_Element extends \Bricks\Element {
             'top-left' => 'top-left',
         ];
         
-        return $directions[$settings['_particles_direction']] ?? 'none';
+        return isset($directions[$settings['_particles_direction']]) ? 
+               $directions[$settings['_particles_direction']] : 'none';
     }
 }

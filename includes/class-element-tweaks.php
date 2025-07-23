@@ -78,6 +78,10 @@ class BricksBooster_Element_Tweaks {
                 'file'  => 'ripplet-effect.php',
                 'class' => 'BricksBooster_Element_Tweaks_17',
             ],
+            'particles' => [
+                'file' => 'particles.php',
+                'class' => 'BricksBooster_Particles_Element'
+            ]
             // 'animation-tweak-3' => [
             //     'file'  => 'animation-tweak-3.php',
             //     'class' => 'BricksBooster_Element_Tweaks_3',
